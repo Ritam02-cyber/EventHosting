@@ -12,4 +12,7 @@ urlpatterns =[
     path('event_home/<int:pk>', views.event_home, name='event_home'),
     path('form_view/<str:unique_id>', views.form_view, name='form_view'),
     path('form_submit/<str:unique_id>', views.form_submit,name="form_submit"),
+    path('accept_responses_toggle/<int:pk>', views.accept_responses_toggle, name='accept_responses_toggle'),
+    path('all_events_view_host', views.all_events_view_host, name='all_events_view_host'),
+    path('winner_declaration/<str:unique_id>', views.winner_declaration, name='winner_declaration')
 ]

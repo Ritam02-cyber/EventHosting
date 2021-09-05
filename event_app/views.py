@@ -1,7 +1,7 @@
 from django.utils import timezone
 from datetime import datetime
 from django.shortcuts import get_object_or_404, redirect, render
-from django.http.response import Http404
+from django.http.response import Http404, JsonResponse
 from . models import *
 import uuid
 from django.contrib.auth.models import User
@@ -13,6 +13,7 @@ from django.core.mail import EmailMessage, message
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
+import json
 
 
 
@@ -102,6 +103,8 @@ def form_submit(request, unique_id):
     start_time = form_parent_obj.event_obj.start_time
     end_time = form_parent_obj.event_obj.end_time
     event = form_parent_obj.event_obj
+    if form_parent_obj.accept_responses == False:
+        return redirect('/form_view/' + str(unique_id))
     if event.start_time < datetime.now(timezone.utc) and event.end_time > datetime.now(timezone.utc):
         print('started, not ended')
     
@@ -155,6 +158,7 @@ def form_submit(request, unique_id):
                     )
                     # form_mcq_field.form_design.add(field)
                     form_mcq_field.save()
+            event.participants.add(profile)
             return redirect('/form_view/' + str(unique_id))
     elif event.start_time > datetime.now(timezone.utc):
         print("not started")
@@ -395,3 +399,34 @@ def responses(request, pk):
         return redirect('/forms')
 
     return render(request,'responses.html', context)
+
+def accept_responses_toggle(request, pk):
+    if request.method == 'POST':
+        data_from_post = json.load(request)['toggle_check']
+        form_parent = get_object_or_404(FormParent, pk =pk)
+        # print(data_from_post)
+        form_parent.accept_responses = data_from_post
+        form_parent.save()
+
+        data = {
+            'toggle_value':'toggle_value',
+        }
+        return JsonResponse(data)
+    else:
+        raise Http404()
+
+
+def all_events_view_host(request):
+    events = Event.objects.filter(host = request.user.profile)
+    context ={
+        'events': events,
+    }
+
+    return render(request,'all_events_view_host.html', context)
+
+def winner_declaration(request, unique_id):
+    event = get_object_or_404(Event, unique_id=unique_id)
+    if request.method == 'POST':
+        pass
+    context = {'event': event}
+    return render(request,'winner_declaration.html', context)

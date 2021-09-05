@@ -20,10 +20,10 @@ class Profile(models.Model):
     def __str__(self):
         return str(self.user)
 
-class Participant(models.Model):
-    prof = models.OneToOneField(Profile, on_delete = models.CASCADE)
-    def __str__(self):
-        return str(self.prof.user.username)
+# class Participant(models.Model):
+#     prof = models.OneToOneField(Profile, on_delete = models.CASCADE)
+#     def __str__(self):
+#         return str(self.prof.user.username)
 
 class Event(models.Model):
     title = models.CharField(max_length=400)
@@ -37,7 +37,7 @@ class Event(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     created_time = models.DateTimeField(auto_now_add=True)
-    event_participant = models.ManyToManyField(Participant, related_name='event_participant')
+    participants = models.ManyToManyField(Profile, related_name="participants")
     status = models.BooleanField(default=True)
     restricted = models.BooleanField(default=False)
     result_out = models.BooleanField(default=False)
@@ -49,7 +49,7 @@ class Event(models.Model):
 class WinningPosition(models.Model):
     position_name = models.CharField(max_length=100)
     event_of = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
-    participant_obj = models.OneToOneField(Participant, on_delete= models.CASCADE)
+    prof = models.ForeignKey(Profile, on_delete= models.CASCADE)
     def __str__(self):
         return str(self.participant_obj) + ' won ' + str(self.position_name)
 
@@ -88,7 +88,7 @@ class FormDesign(models.Model):
 
 class FormObject(models.Model):
     form_parent = models.ForeignKey(FormParent, on_delete=models.CASCADE)
-    applicant = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(Profile, on_delete=models.CASCADE)
     unique_id = models.UUIDField(default=uuid.uuid4, editable=False)
 
     def __str__(self):
@@ -152,3 +152,5 @@ class Choice(models.Model):
     mcq_parent = models.ForeignKey(FormDesign, on_delete= models.CASCADE)
     def __str__(self):
         return self.name
+
+

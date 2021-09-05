@@ -4,7 +4,7 @@ from . models import *
 # Register your models here.
 
 admin.site.register(Profile)
-admin.site.register(Participant)
+# admin.site.register(Participant)
 admin.site.register(Event)
 admin.site.register(WinningPosition)
 admin.site.register(FormParent)

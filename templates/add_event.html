@@ -99,16 +99,24 @@
             document.getElementById("start_time").value = d;
 
             console.log(d);
+            if(document.getElementById("start_time").value=document.getElementById("start_time").value){
+            alert("End Time Must Be After Start Time")
+        }
         });
 
         document.getElementById("endTime").addEventListener("change", () => {
             var inpt_date = document.getElementById("endTime").value;
-            var d = new Date(inpt_date).toISOString();
+            var e = new Date(inpt_date).toISOString();
 
-            document.getElementById("end_time").value = d;
+            document.getElementById("end_time").value = e;
 
-            console.log(d);
+            // console.log(d);
+            if(e<=document.getElementById("start_time").value){
+            alert("End Time Must Be After Start Time")
+        }
         });
+        
+        
 
 
     </script>
