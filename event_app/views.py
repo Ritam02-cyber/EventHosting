@@ -426,7 +426,42 @@ def all_events_view_host(request):
 
 def winner_declaration(request, unique_id):
     event = get_object_or_404(Event, unique_id=unique_id)
+    winner_positions = WinningPosition.objects.filter(event_of=event)
+
     if request.method == 'POST':
-        pass
-    context = {'event': event}
+        position_name = request.POST.get('position', '')
+        profs = request.POST.getlist('profs', '')
+        print(profs)
+        print(position_name)
+        winning_position_obj = WinningPosition(position_name=position_name, event_of=event)
+        winning_position_obj.save()
+        for i in profs:
+            winning_position_obj.prof.add(get_object_or_404(Profile, pk =i))
+
+
+    context = {
+        'event': event,
+        'winner_positions': winner_positions
+        }
     return render(request,'winner_declaration.html', context)
+
+
+def send_mail_to_winners(request, unique_id):
+    event = get_object_or_404(Event, unique_id=unique_id)
+    winning_positions = WinningPosition.objects.filter(event_of=event) 
+    if request.method == 'POST':
+        positions = request.POST.getlist('positions', [])
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+        print(positions, subject, message)
+        email_list =[]
+        for i in positions:
+            print(i)
+            position_obj = get_object_or_404(WinningPosition, pk=i)
+            for k in position_obj.prof.all():
+                email_list.append(k.user.username)
+        print(email_list)
+
+    context = {'event': event}
+    return redirect('/winner_declaration/' + str(unique_id))
+    

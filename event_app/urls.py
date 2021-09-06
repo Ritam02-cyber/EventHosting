@@ -14,5 +14,6 @@ urlpatterns =[
     path('form_submit/<str:unique_id>', views.form_submit,name="form_submit"),
     path('accept_responses_toggle/<int:pk>', views.accept_responses_toggle, name='accept_responses_toggle'),
     path('all_events_view_host', views.all_events_view_host, name='all_events_view_host'),
-    path('winner_declaration/<str:unique_id>', views.winner_declaration, name='winner_declaration')
+    path('winner_declaration/<str:unique_id>', views.winner_declaration, name='winner_declaration'),
+    path('send_mail_to_winners/<str:unique_id>', views.send_mail_to_winners, name='send_mail_to_winners')
 ]

@@ -49,9 +49,9 @@ class Event(models.Model):
 class WinningPosition(models.Model):
     position_name = models.CharField(max_length=100)
     event_of = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True)
-    prof = models.ForeignKey(Profile, on_delete= models.CASCADE)
+    prof = models.ManyToManyField(Profile)
     def __str__(self):
-        return str(self.participant_obj) + ' won ' + str(self.position_name)
+        return str(self.prof) + ' won ' + str(self.position_name)
 
 
 
