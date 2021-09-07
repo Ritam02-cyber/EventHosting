@@ -14,6 +14,11 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 import json
+from django.contrib import messages
+from django.core.mail import EmailMultiAlternatives
+from django.template import Context
+from django.template.loader import render_to_string
+
 
 
 
@@ -459,9 +464,83 @@ def send_mail_to_winners(request, unique_id):
             print(i)
             position_obj = get_object_or_404(WinningPosition, pk=i)
             for k in position_obj.prof.all():
-                email_list.append(k.user.username)
+                email_list.append(k.user.email)
         print(email_list)
 
+
+        c = {'sub':subject,'message':message }
+        text_content = render_to_string('email_templates/email.txt', c)
+        html_content = render_to_string('email_templates/email.html', c)
+
+        email = EmailMultiAlternatives('Subject', text_content)
+        email.attach_alternative(html_content, "text/html")
+        email.to = email_list
+        email.send()
+        #email to winners
+        # template_locator = render_to_string('Email_templates/email.html', {'sub':subject,'message':message })
+        # email_locator = EmailMessage(
+        #     subject,
+        #     template_locator,
+        #     settings.EMAIL_HOST_USER,
+        #     email_list,
+
+        #     )
+        # email_locator.fail_silently = False
+        # email_locator.send()
     context = {'event': event}
     return redirect('/winner_declaration/' + str(unique_id))
+
+def send_mail_to_participants(request,unique_id):
+    event = get_object_or_404(Event, unique_id=unique_id)
+    if request.method == 'POST':
+        pass
+    context = {'event': event}
+    return render(request, 'send_mail_to_participants.html', context)
+
+def register_home(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        username = request.POST.get('username', '')
+        email = request.POST.get('email', '')
+        password = request.POST.get('password', '')
+        conf_password = request.POST.get('conf_password', '')
+        userCheck = User.objects.filter(username =username)
+        type_of_account = request.POST.get('type_of_account')
+        print(type_of_account)
+        if len(username)> 20:
+            messages.warning(request,"Too Long Username!!")
+        elif password != conf_password:
+            messages.warning(request, "Passwords Don't Match!!")
+        elif userCheck:
+            messages.warning(request, "Username Already Exists , Kindly Change!!")
+        else:
+            user_obj = User.objects.create_user(first_name = name, password = password, email = email, username=username)
+
+            user_obj.save()
+            # prf =Profile(prof_user= user_obj)
+            # prf.save()
+            prof = get_object_or_404(Profile, user = user_obj)
+            prof.type_of = type_of_account
+            prof.save()
+
+            messages.success(request, "Account Created Successfully!!")
     
+    return render(request, 'register_home.html')
+
+
+def log_in(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+
+        user_obj = authenticate( username= username, password = password)
+        print(user_obj)
+        if user_obj is not None:
+            login(request, user_obj)
+            messages.success(request, "Logged In Successfully :^) ")
+            return redirect('/')
+        else:
+            messages.warning(request, "Invalid Credentials : ( ")
+            return redirect('/register_home')
+    else:
+        raise Http404()
