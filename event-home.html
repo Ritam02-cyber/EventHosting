@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>event-homepage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .bg-primary{
+            background-color: #f7f8fa;
+        }
+        header {
+            background-color: #f7f8fa;
+            position: sticky;
+            top: 0;
+        }
+
+        nav {
+            background-color: #f7f8fa;
+            display: flex;
+            height: 10vh;
+            padding-top: 23px;
+            align-items: center;
+            justify-content: space-between;
+
+        }
+
+        body {
+            
+            font-family: Poppins, sans-serif;
+        }
+
+        .nav {
+            display: flex;
+            margin-right: 10vw;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+
+        }
+
+        nav ul li {
+            padding: 1em;
+
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+        }
+
+        nav ul li a:hover {
+
+            color: red;
+        }
+
+        .navi {
+            display: flex;
+            align-items: center;
+            margin-left: 10vw;
+            padding-bottom: 1rem;
+        }
+        
+
+        .intro {
+            display: flex;
+            justify-content: center;
+            font-size: xx-large;
+            font-weight: bold;
+            padding: 45px;
+           
+        }
+
+        .intro h1 {
+            padding: 25px;
+        }
+
+        .scroll-active {
+            transition-duration: 1s ;
+            background-color: white;
+           
+            color: black;
+            box-shadow: 2px 1px 7px;
+           
+        }
+        .justify_center{
+            display:flex;
+            justify-content: center;
+        }
+        .justify_center img{
+            width: 18%;
+            height: 18%;
+            padding: 23px;
+        }
+        .flex{
+            display: flex;
+            justify-content: center;
+            padding:2rem;
+        }
+        .flex input{
+            background-color: rgb(243, 81, 81,0.5);
+            height: 3rem;
+            width:7rem;
+            padding: 7px;
+            border-radius: 5px;
+            border: none;
+            color:red;
+            cursor: pointer;
+        }
+        .flex button{
+        background-color: rgba(131, 241, 109, 0.5);
+            height: 3rem;
+            width:7rem;
+            padding: 7px;
+            border-radius: 5px;
+            border: none;
+            color: green;
+            cursor: pointer;
+        }
+        .font_size{
+            font-size: x-large;
+        }
+        .card{
+           
+            display: flex;
+            flex-direction: column;  
+        }
+        .card_items{
+            display:flex;
+            width: 18vw;
+           justify-content: center;
+           text-align: center;
+          color: rgb(71, 70, 70);
+          gap: 20px;
+        }
+        .flex1{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+       @media screen and (max-width:500px) {
+           .flex1{
+              display: grid;
+              grid-template-columns: auto auto;
+              grid-gap:10vw;
+           }
+           .card img{
+               width:100px;
+           }
+           .card_items{
+               width:27vw;
+           }
+       }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="navi">
+                <img src="logo(1).png" alt="nits logo">&emsp;&emsp;&emsp;
+                <h2>Title</h2>
+            </div>
+            <div class="nav">
+                <ul>
+                    <li> <a href="#">Home</a></li>
+                    <li> <a href="#">Events</a></li>
+                    <li> <a href="#">Blog</a></li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="bg-primary">
+            <div class="intro">
+                Explore and participate<br>
+                to know yourself
+            </div>
+            <div class="justify_center">
+                We serve you a common platform to know the details and participate in ongoing and upcomming events.
+            </div>
+            <div class="flex"> <input type="button" value="Get Started">&emsp;&emsp;&emsp;
+                <button>Search Events</button></div>
+            <div class="justify_center"><img src="images/Group1.png" alt=""></div>
+           </section>
+           <section>
+               <div class="flex font_size" >
+                   Various Events
+               </div>
+               <div class="flex1">
+                   <div class="card">
+                    <img src="images/face1.jpg" alt=""width=250px>
+                    <div class="card_items"> Writng competition <br>click below to explore</div>
+                   </div>
+                   <div class="card">
+                       <img src="images/face2.jpg" alt="" width=250px>
+                       <div class="card_items">singing and dancing competition have fun<br>click below to explore</div>
+                   </div>
+                   <div class="card">
+                       <img src="images/face3.jpg" alt="" width=250px>
+                       <div class="card_items">environmental activities includes</div>
+                   </div>
+                   <div class="card">
+                    <img src="images/face8.jpg" alt="" width=250px>
+                    <div class="card_items">sport and games includes all the online and offline game tournament</div>
+                </div>
+               </div>
+           </section>
+    </main>
+    <script>
+        window.addEventListener('scroll', function () {
+            let header = document.querySelector('nav');
+            let windowposition = window.scrollY > 300;
+            header.classList.toggle('scroll-active', windowposition);
+        })
+    </script>
+</body>
+
+</html>
