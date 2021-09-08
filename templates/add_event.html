@@ -1,125 +1,147 @@
+{% extends "base2.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Event</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous" />
-</head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #e3f2fd">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link" href="#">Features</a>
-                    <a class="nav-link" href="#">Pricing</a>
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+{% block css %}
+
+<style>
+    .form-control,
+    .form-select {
+        background-color: #121212 !important;
+        border: 2px solid #292929;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        color: white;
+
+
+
+
+    }
+
+    input, textarea {
+        color: white !important;
+    }
+    label{
+        color: white !important;
+    }
+</style>
+
+{% endblock css %}
+
+
+
+{% block container %}
+<div class="d-flex justify-content-center mt-3 p-4">
+    <img style="height:100px" src="{% static 'illus1.svg' %}" alt="">
+    <h2 style="margin-left: 1rem; margin-top:2rem">Add Event</h2>
+</div>
+
+<!-- form -->
+
+<div class="container mt-2 p-5">
+
+
+    <div class="card border-primary mb-3 p-3">
+
+        <div class="card-body text-primary">
+            <h3 style=" font-size: 900;" class="card-title mb-5">Add Details</h3>
+            <br><br>
+            <form enctype="multipart/form-data" action="{% url 'add_event' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-5">
+                    <label for="exampleFormControlInput1" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="name" />
                 </div>
-            </div>
+                <div class="mb-5">
+                    <label for="exampleFormControlTextarea1" class="form-label">
+                        Description</label>
+                    <textarea class="form-control" id="mytextarea" rows="5" name="description"></textarea>
+                </div>
+                <div class="mb-5">
+                    <label for="exampleFormControlTextarea1" class="form-label">
+                        Rules</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="rules"></textarea>
+                </div>
+                <div class="mb-5">
+                    <label for="formFile" class="form-label">Poster</label>
+                    <input style="color: #fff" class="form-control" type="file" name="poster" id="formFile" />
+                </div>
+                <br>
+                <div>
+                    <label for="exampleFormControlInput1" class="form-label">No of Participants</label>
+                    <input type="number" class="form-control" id="exampleFormControlInput1" name="no_of_participants" />
+                </div>
+
+                <br><br>
+
+                <select name="type" class="form-select" aria-label="Default select example">
+                    <option value="NR" selected>Normal</option>
+                    <option value="GM">Gaming</option>
+                </select>
+                <br><br>
+                <label for="restriction" class="form-label">Restriction</label>
+                <select id="restriction" name="restriction" class="form-select" aria-label="Default select example">
+                    <option value="False" selected>Public</option>
+                    <option value="True">Private</option>
+                </select>
+                <br><br>
+                <label for="startTime" class="col-sm-3 col-form-label mt-2">Start Time</label>
+                <div class="col-sm-9 mt-2">
+                    <input class="form-control" type="datetime-local" id="startTime" required />
+                    <input style="display: none" class="form-control" type="datetime" id="start_time"
+                        name="start_time" />
+                </div>
+                <br><br>
+                <label for="endTime" class="col-sm-3 col-form-label mt-2">End Time</label>
+                <div class="col-sm-9 mt-2">
+                    <input class="form-control" type="datetime-local" id="endTime" required />
+                    <input style="display: none" class="form-control" type="datetime" id="end_time" name="end_time" />
+                </div>
+                <br><br>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary" type="submit">Submit</button>
+
+                </div>
+            </form>
         </div>
-    </nav>
-
-    <!-- form -->
-
-    <div class="container mt-5 p-5">
-        <form enctype="multipart/form-data" action="{% url 'add_event' %}" method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Name</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" name="name" />
-            </div>
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">
-                    Description</label>
-                <textarea class="form-control" id="mytextarea" rows="3" name="description"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">
-                    Rules</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="rules"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Poster</label>
-                <input class="form-control" type="file" name="poster" id="formFile" />
-            </div>
-
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">No of Participants</label>
-                <input type="number" class="form-control" id="exampleFormControlInput1" name="no_of_participants" />
-            </div>
-            <select name="type" class="form-select" aria-label="Default select example">
-                <option value="NR" selected>Normal</option>
-                <option value="GM">Gaming</option>
-            </select>
-            <br />
-            <label for="restriction" class="form-label">Restriction</label>
-            <select id="restriction" name="restriction" class="form-select" aria-label="Default select example">
-                <option value="False" selected>Public</option>
-                <option value="True">Private</option>
-            </select>
-
-            <label for="startTime" class="col-sm-3 col-form-label mt-2">Start Time</label>
-            <div class="col-sm-9 mt-2">
-                <input class="form-control" type="datetime-local" id="startTime" required />
-                <input style="display: none" class="form-control" type="datetime" id="start_time" name="start_time" />
-            </div>
-
-            <label for="endTime" class="col-sm-3 col-form-label mt-2">End Time</label>
-            <div class="col-sm-9 mt-2">
-                <input class="form-control" type="datetime-local" id="endTime" required />
-                <input style="display: none" class="form-control" type="datetime" id="end_time" name="end_time" />
-            </div>
-            <center>
-                <button type="submit" class="btn btn-primary mt-4">Submit</button>
-            </center>
-        </form>
     </div>
 
-    <script src="{% static 'my.js' %}"></script>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
-        crossorigin="anonymous"></script>
-    <script>
-        document.getElementById("startTime").addEventListener("change", () => {
-            var inpt_date = document.getElementById("startTime").value;
-            var d = new Date(inpt_date).toISOString();
+{% endblock container %}
 
-            document.getElementById("start_time").value = d;
+{% block js %}
 
-            console.log(d);
-            if(document.getElementById("start_time").value=document.getElementById("start_time").value){
+
+<script>
+    document.getElementById("startTime").addEventListener("change", () => {
+        var inpt_date = document.getElementById("startTime").value;
+        var d = new Date(inpt_date).toISOString();
+
+        document.getElementById("start_time").value = d;
+
+        console.log(d);
+        if (document.getElementById("start_time").value = document.getElementById("start_time").value) {
             alert("End Time Must Be After Start Time")
         }
-        });
+    });
 
-        document.getElementById("endTime").addEventListener("change", () => {
-            var inpt_date = document.getElementById("endTime").value;
-            var e = new Date(inpt_date).toISOString();
+    document.getElementById("endTime").addEventListener("change", () => {
+        var inpt_date = document.getElementById("endTime").value;
+        var e = new Date(inpt_date).toISOString();
 
-            document.getElementById("end_time").value = e;
+        document.getElementById("end_time").value = e;
 
-            // console.log(d);
-            if(e<=document.getElementById("start_time").value){
+        // console.log(d);
+        if (e <= document.getElementById("start_time").value) {
             alert("End Time Must Be After Start Time")
         }
-        });
-        
-        
+    });
 
 
-    </script>
-</body>
 
-</html>
+
+</script>
+
+{% endblock js %}

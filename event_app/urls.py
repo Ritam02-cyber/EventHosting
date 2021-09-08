@@ -16,6 +16,7 @@ urlpatterns =[
     path('all_events_view_host', views.all_events_view_host, name='all_events_view_host'),
     path('winner_declaration/<str:unique_id>', views.winner_declaration, name='winner_declaration'),
     path('send_mail_to_winners/<str:unique_id>', views.send_mail_to_winners, name='send_mail_to_winners'),
+    path('send_mail_to_participants/<str:unique_id>', views.send_mail_to_participants, name='send_mail_to_participants'),
     path('register_home', views.register_home, name='register_home'),
     path('log_in', views.log_in, name='log_in'),
 ]

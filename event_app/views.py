@@ -30,9 +30,16 @@ def convert_time(time):
 
 
 def home(request):
-    events = Event.objects.filter(status= True, restricted = False).order_by('-created_time')    
+    events = Event.objects.filter(status= True, restricted = False).order_by('-created_time')[:5]
+    event_list =[]
+    for event in events:
+        winning_positions = WinningPosition.objects.filter(event_of = event)
+        if len(winning_positions) == 0:
+            event_list.append(event)
+
+
     context ={
-        'events':events,
+        'events':event_list,
     }
     return render(request, 'home.html', context)
 
@@ -472,8 +479,9 @@ def send_mail_to_winners(request, unique_id):
         text_content = render_to_string('email_templates/email.txt', c)
         html_content = render_to_string('email_templates/email.html', c)
 
-        email = EmailMultiAlternatives('Subject', text_content)
+        email = EmailMultiAlternatives(subject, text_content)
         email.attach_alternative(html_content, "text/html")
+      
         email.to = email_list
         email.send()
         #email to winners
@@ -492,8 +500,21 @@ def send_mail_to_winners(request, unique_id):
 
 def send_mail_to_participants(request,unique_id):
     event = get_object_or_404(Event, unique_id=unique_id)
+
     if request.method == 'POST':
-        pass
+        participants = request.POST.getlist('participants', [])
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+        print(participants)
+        c = {'sub':subject,'message':message }
+        text_content = render_to_string('email_templates/email.txt', c)
+        html_content = render_to_string('email_templates/email.html', c)
+
+        email = EmailMultiAlternatives(subject, text_content)
+        email.attach_alternative(html_content, "text/html")
+        email.to = participants
+        
+        email.send()
     context = {'event': event}
     return render(request, 'send_mail_to_participants.html', context)
 

@@ -2,6 +2,36 @@
 
 {% block container %}
 <div class="container mt-3">
+    <form action="{% url 'send_mail_to_participants' event.unique_id %}" method="POST">{% csrf_token %}
+
+        <select class="form-select" multiple name="participants">
+            {% for participant in event.participants.all %}
+              
+            
+            <option value="{{participant.user.email}}">{{participant}}</option>
+      
+
+            {% endfor %}
+
+
+            
+        </select>
+
+        <div class="mb-3 mt-3">
+            <label for="subject" class="form-label">Subject</label>
+            <input type="text" class="form-control" id="subject" name="subject" value="Thank You For Participating in {{event.title}}. We Were Proud To Have You Amongst Our Winners!" required>
+          </div>
+          <div class="mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea class="form-control" id="message" rows="3" name='message' required>Thank you for participating in our event and making us successful. It was a pleasure to have you onboard and we look forward for more such associations. We wish you all the success in your endeavors and hope that we get an opportunity to work with you again soon.
+            </textarea>
+          </div>
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </div>
+
+
+    </form>
     
 </div>
 {% endblock container %}

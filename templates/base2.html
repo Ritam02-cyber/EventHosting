@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+
+    <!-- google fonts start -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+    <!-- google fonts end -->
+</head>
+
+
+<style>
+    body {
+        background: #292929 !important;
+        color: #ffff;
+        font-family: 'Lato', sans-serif;
+    }
+
+    #card-thumb-bottom {
+        max-width: 100%;
+        height: 300px;
+        object-fit: cover
+    }
+
+    .card {
+        background: #121212;
+        border-radius: 9px;
+    }
+
+    nav {
+        background: #121212 !important;
+        color: #ffff !important;
+    }
+
+    .card-img-bottom {
+        border-radius: 8px;
+    }
+
+
+    .heading {
+        color:
+            #03dac6;
+    }
+    #hero-illustration{
+        width:35vw;
+        min-width:300px;
+    }
+    #hero-btn{
+        width: 8rem;
+    }
+    #card:hover{
+        box-shadow: 8px 4px 54px -15px rgba(64,64,64,0.79);
+        -webkit-box-shadow: 8px 4px 54px -15px rgba(64,64,64,0.79);
+        -moz-box-shadow: 8px 4px 54px -15px rgba(64,64,64,0.79);
+        transform: translate(0, -5px);
+
+    }
+   
+    
+</style>
+
+{% block css %}
+  
+{% endblock css %}
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid ">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+                <div class="navbar-nav ">
+                    <a class="nav-link active px-3 py-4 " aria-current="page" href="/">Home</a>
+                    <a class="nav-link active px-3 py-4 " href="{% url 'add_event' %}">Add Events</a>
+                    <a class="nav-link active px-3 py-4 " href="#">Pricing</a>
+                    <a class="nav-link active  px-3 py-4 disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+    {% block container %}
+      
+    {% endblock container %}
+
+
+
+
+
+
+
+
+    {% comment %}
+    <form method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        <label for="birthdaytime">Birthday (date and time):</label>
+        <input type="datetime-local" id="time_picker" />
+        <input type="datetime" name="time" id="time" />
+        <button type="submit">Sub</button>
+    </form>
+    {% endcomment %}
+
+
+    {% block js %}
+      
+    {% endblock js %}
+
+
+    <script src="{% static 'my.js' %}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
