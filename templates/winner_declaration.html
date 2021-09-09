@@ -2,138 +2,156 @@
 
 {% block container %}
 
-    <div class="container mt-5">
+<div class="container mt-5">
 
-        <form action="{% url 'winner_declaration' event.unique_id %}" method="POST">{% csrf_token %}
+  <form action="{% url 'winner_declaration' event.unique_id %}" method="POST">{% csrf_token %}
 
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Position </label>
-                <input type="text" name="position" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="eg: 1st Position" required>
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3">
-                <select name="profs" class="form-select" multiple aria-label="multiple select example" required>
-                    {% for i in event.participants.all %}
-        
-                    <option value="{{i.pk}}">{{i}}</option>
-                      
-                    {% endfor %}
-                    
-                  
-                </select>
-    
-            </div>
-            <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="submit">Declare</button>
-               
-            </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Position </label>
+      <input type="text" name="position" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+        placeholder="eg: 1st Position" required>
+      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+      <select name="profs" class="form-select" multiple aria-label="multiple select example" required>
+        {% for i in event.participants.all %}
 
-        </form>
+        <option value="{{i.pk}}">{{i}}</option>
 
-        
-        
+        {% endfor %}
+
+
+      </select>
+
+    </div>
+    <div class="d-grid gap-2">
+      <button class="btn btn-primary" type="submit">Declare</button>
+
     </div>
 
-    <hr>
-
-    <div class="container mt-4">
-        <div class="d-flex align-items-start">
-            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-
-                
-              <button style="font-size: medium;"  class="nav-link active" id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab" data-bs-toggle="pill" data-bs-target="#tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}" type="button" role="tab" aria-controls="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}" aria-selected="true">{{winner_positions.0.position_name}}</button>
+  </form>
 
 
-              {% for i in winner_positions|slice:"1:" %}
 
-              <button style="font-size: medium;" class="nav-link" id="tab{{i.position_name}}{{i.pk}}-tab" data-bs-toggle="pill" data-bs-target="#tab{{i.position_name}}{{i.pk}}" type="button" role="tab" aria-controls="tab{{i.position_name}}{{i.pk}}" aria-selected="false">{{i.position_name}}</button>
-                  
-              {% endfor %}
-              
-            
-            </div>
-            <div style="width: 100%;" class="tab-content" id="v-pills-tabContent">
+</div>
 
-              <div class="tab-pane fade show active" id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}" role="tabpanel" aria-labelledby="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab">
+<hr>
 
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                      {{winner_positions.0.position_name}}
-                    </a>
-                    {% for k in winner_positions.0.prof.all %}
+{% if winner_positions %}
 
-                    <a href="#" class="list-group-item list-group-item-action">{{k}}</a>
-                      
-                    {% endfor %}
-                    
-                   
-                   
-                </div>
+<div class="container mt-4">
+  <div class="d-flex align-items-start">
+    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
-              </div>
 
-              {% for i in winner_positions|slice:"1:" %}
-              <div class="tab-pane fade" id="tab{{i.position_name}}{{i.pk}}" role="tabpanel" aria-labelledby="tab{{i.position_name}}{{i.pk}}-tab">
+      <button style="font-size: medium;" class="nav-link active"
+        id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab" data-bs-toggle="pill"
+        data-bs-target="#tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}" type="button" role="tab"
+        aria-controls="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}"
+        aria-selected="true">{{winner_positions.0.position_name}}</button>
 
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                      {{i.position_name}}
-                    </a>
-                    {% for k in i.prof.all %}
 
-                    <a href="#" class="list-group-item list-group-item-action">{{k}}</a>
-                      
-                    {% endfor %}
-                   
-                </div>
+      {% for i in winner_positions|slice:"1:" %}
 
-              </div>
-              {% endfor %}
-              
-            </div>
-          </div>
+      <button style="font-size: medium;" class="nav-link" id="tab{{i.position_name}}{{i.pk}}-tab" data-bs-toggle="pill"
+        data-bs-target="#tab{{i.position_name}}{{i.pk}}" type="button" role="tab"
+        aria-controls="tab{{i.position_name}}{{i.pk}}" aria-selected="false">{{i.position_name}}</button>
+
+      {% endfor %}
+
+
     </div>
+    <div style="width: 100%;" class="tab-content" id="v-pills-tabContent">
+
+      <div class="tab-pane fade show active" id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}"
+        role="tabpanel" aria-labelledby="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab">
+
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+            {{winner_positions.0.position_name}}
+          </a>
+          {% for k in winner_positions.0.prof.all %}
+
+          <a href="#" class="list-group-item list-group-item-action">{{k}}</a>
+
+          {% endfor %}
 
 
-    <hr>
 
-    <div class="container mt-3">
+        </div>
 
-      <h4><strong>Send Email </strong></h4>
-
-      <div style="border-radius: 6px;" class="container bg-white p-5">
-        <form action="{% url 'send_mail_to_winners' event.unique_id %}" method="POST">{% csrf_token %}
-          <div class="mb-3">
-            <label for="positions" class="form-label">Positions</label>
-            <select id="positions" name='positions' class="form-select" multiple aria-label="multiple select example" required>
-  
-              {% for i in winner_positions %}
-  
-              <option value="{{i.pk}}">{{i.position_name}}</option>
-                
-              {% endfor %}
-              
-             
-            </select>
-          </div>
-  
-          <div class="mb-3">
-            <label for="subject" class="form-label">Subject</label>
-            <input type="text" class="form-control" id="subject" name="subject" value="Thank You For Participating in {{event.title}}. We Were Proud To Have You Amongst Our Winners!" required>
-          </div>
-          <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" id="message" rows="3" name='message' required>Thank you for participating in our event and making us successful. It was a pleasure to have you onboard and we look forward for more such associations. We wish you all the success in your endeavors and hope that we get an opportunity to work with you again soon.
-            </textarea>
-          </div>
-          <div class="d-grid gap-2 col-6 mx-auto">
-            <button class="btn btn-primary" type="submit">Submit</button>
-          </div>
-  
-        </form>
       </div>
-     
 
+      {% for i in winner_positions|slice:"1:" %}
+      <div class="tab-pane fade" id="tab{{i.position_name}}{{i.pk}}" role="tabpanel"
+        aria-labelledby="tab{{i.position_name}}{{i.pk}}-tab">
+
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+            {{i.position_name}}
+          </a>
+          {% for k in i.prof.all %}
+
+          <a href="#" class="list-group-item list-group-item-action">{{k}}</a>
+
+          {% endfor %}
+
+        </div>
+
+      </div>
+      {% endfor %}
 
     </div>
+  </div>
+</div>
+<hr>
+
+{% endif %}
+
+
+
+
+
+<div class="container mt-3">
+
+  <h4 style="text-align:center"><img style="margin-bottom: 0.1rem; margin-right: 0.5rem;" src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/44/ffffff/external-mail-interface-kiranshastry-solid-kiranshastry.png"/><strong>Send Email </strong></h4>
+
+  <div style="border-radius: 6px;" class="container  px-5 py-2">
+    <form action="{% url 'send_mail_to_winners' event.unique_id %}" method="POST">{% csrf_token %}
+      <div class="mb-3">
+        <label for="positions" class="form-label">Positions</label>
+        <select id="positions" name='positions' class="form-select" multiple aria-label="multiple select example"
+          required>
+
+          {% for i in winner_positions %}
+
+          <option value="{{i.pk}}">{{i.position_name}}</option>
+
+          {% endfor %}
+
+
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="subject" class="form-label">Subject</label>
+        <input type="text" class="form-control" id="subject" name="subject"
+          value="Thank You For Participating in {{event.title}}. We Were Proud To Have You Amongst Our Winners!"
+          required>
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-control" id="message" rows="3" name='message' required>Thank you for participating in our event and making us successful. It was a pleasure to have you onboard and we look forward for more such associations. We wish you all the success in your endeavors and hope that we get an opportunity to work with you again soon.
+            </textarea>
+      </div>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+
+    </form>
+  </div>
+
+
+
+</div>
 {% endblock container %}

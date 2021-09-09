@@ -2,6 +2,7 @@
 
 {% block container %}
 <div class="container mt-3">
+  <h4 style="text-align:center"><img style="margin-bottom: 0.1rem; margin-right: 0.5rem;" src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/44/ffffff/external-mail-interface-kiranshastry-solid-kiranshastry.png"/><strong>Send Email </strong></h4>
     <form action="{% url 'send_mail_to_participants' event.unique_id %}" method="POST">{% csrf_token %}
 
         <select class="form-select" multiple name="participants">

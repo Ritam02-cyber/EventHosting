@@ -19,4 +19,5 @@ urlpatterns =[
     path('send_mail_to_participants/<str:unique_id>', views.send_mail_to_participants, name='send_mail_to_participants'),
     path('register_home', views.register_home, name='register_home'),
     path('log_in', views.log_in, name='log_in'),
+    path('leaderboard', views.leaderboard, name='leaderboard'),
 ]

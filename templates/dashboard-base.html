@@ -32,12 +32,17 @@
     .card-link{
         text-decoration: none;
     }
+    #description{
+        max-width: 100%;
+    }
     </style>
   <script>
     tinymce.init({
       selector: "#mytextarea ,#modaltextarea",
       // selector:"#",
       height: 300,
+      skin: "oxide-dark",
+        content_css: "dark",
 
       plugins: "image code",
       toolbar: "undo redo | link image | code",
@@ -100,16 +105,90 @@
 </head>
 <style>
     body {
-        font-family: 'Open Sans', sans-serif;
+        background: #121212 !important;
+        color: #ffff;
+        font-family: 'Lato', sans-serif;
+    }
+
+    #card-thumb-bottom {
+        max-width: 100%;
+        height: 300px;
+        object-fit: cover
+    }
+
+    .card {
+        background: #121212;
+        border-radius: 9px;
+    }
+
+    nav {
+        background: #121212 !important;
+        color: #ffff !important;
+    }
+
+    .card-img-bottom {
+        border-radius: 8px;
+    }
+
+
+    .heading {
+        color:
+            #03dac6;
+    }
+    #hero-illustration{
+        width:35vw;
+        min-width:300px;
+    }
+    #hero-btn{
+        width: 8rem;
+    }
+    #card:hover{
+        box-shadow: 8px 4px 54px -15px rgba(64,64,64,0.79);
+        -webkit-box-shadow: 8px 4px 54px -15px rgba(64,64,64,0.79);
+        -moz-box-shadow: 8px 4px 54px -15px rgba(64,64,64,0.79);
+        transform: translate(0, -5px);
+
+    }
+    .nav-link:hover{
+
+        color: #bb86fc !important;
+    }
+   #big-card{
+    box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
+-webkit-box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
+-moz-box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
+   }
+    
+   .form-control,
+    .form-select {
+        background-color: #121212 !important;
+        border: 2px solid #292929;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        color: white;
+
+
+
+
+    }
+
+    input,
+    textarea {
+        color: white !important;
+    }
+
+    label {
+        color: white !important;
     }
     #card_parent {
-        background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+        background:#787878;
     }
 
     #form_card {
         border-radius: 8px;
-        border: 1px solid #dadce0;
-        transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+   
+       
     }
 
     #card_parent::-webkit-scrollbar {
@@ -131,19 +210,12 @@
         /* creates padding around scroll thumb */
     }
 
-    #form_field {
-        border-top: none;
-        border-right: none;
-        border-left: none;
-        border-radius: 0;
-        border-color: #9a9a9a;
-
-    }
+    
     #form_field:focus {
   box-shadow: none;
 }
 #bg-grad{
-    background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+   background-color:#292929;
 }
 .form_border:hover{
     
@@ -155,7 +227,7 @@
 
 }
 #label_div{
-   background-color: aliceblue;
+   background-color: #292929;
    padding:1rem;
    border-radius: 4px;
    margin-bottom: 1.5rem;
@@ -168,22 +240,22 @@
     font-size: 1.4rem;
 }
 
-/* box shadow */
-.box-shadow{
 
-    box-shadow: -2px 1px 8px 5px #6a99e6;
--webkit-box-shadow: -2px 1px 8px 5px #6a99e6;
--moz-box-shadow: -2px 1px 8px 5px #6a99e6;
-
-}
 #flexRadioDefault1{
     opacity: 1 !important;
 }
 .form-check-label{
     opacity: 1!important;
 }
+.list-group-item {
+    background-color: #121212;
+    color: #fff !important;
+}
 
 </style>
+{% block css %}
+  
+{% endblock css %}
 
 <body>
 
@@ -220,7 +292,7 @@
 
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 ">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 d-none d-sm-inline">EaseForm</span>
@@ -332,6 +404,12 @@
             for( i =0; i<labels.length; i++){
                 labels[i].innerHTML = labels[i].innerText
             }
+
+
+
+
+
+            document.getElementById('description').innerHTML = document.getElementById('description').innerText;
         </script>
     {% block js %}
 

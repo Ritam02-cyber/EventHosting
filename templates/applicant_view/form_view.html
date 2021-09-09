@@ -1,195 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EaseForm</title>
-    
-    <link rel="shortcut icon" href="">
-    <!-- fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-    <!-- fonts end -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-</head>
-<style>
-    html,
-    body {
-        /* height: 98%; */
-        font-family: 'Open Sans', sans-serif;
-    }
+{% extends "base2.html" %}
 
-    body {
-        background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-    }
+{% block container %}
 
-    #form_card {
-        border-radius: 8px;
-        border: 1px solid #dadce0;
-        transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
-    }
 
-    #form_field {
-        border-top: none;
-        border-right: none;
-        border-left: none;
-        border-radius: 0;
-        border-color: #9a9a9a;
+<div class="container mt-5">
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-lg-8">
+      <div id="form_card" class="card mb-3">
+        <img style="height:200px; object-fit: cover; border-radius: 8px;" src="{{form_parent.banner_img.url}}"
+          class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{form_parent.title}}</h5>
+          <p class="card-text">{{form_parent.description}}</p>
+          <span><img style="margin-bottom: 0.1rem; margin-right:0.5rem" src="https://img.icons8.com/ios-filled/20/ffffff/user-male-circle.png"/> <strong style="color: grey;">
+              {{request.user.username}}</strong></span>
+          <p class="card-text mt-2"><small class="text-muted">From : {{form_parent.event_obj.title}}</small></p>
+        </div>
+      </div>
 
-    }
-    #form_field:focus {
-  box-shadow: none ;
-}
+    </div>
+  </div>
 
-#label > p > img {
-    max-width: 98% !important;
-    max-height: 200px !important;
+  {% if formobj %}
 
-}
-#label_div{
-   background-color: aliceblue;
-   padding:1rem;
-   border-radius: 4px;
-   margin-bottom: 1.5rem;
-}
-</style>
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-lg-8">
+      <div id="form_card" class="card mb-3">
+        <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
 
-<body>
+        <div class="card-body py-4 px-5">
+
+          <h3 class="card-title mt-3">Response is recorded !!</h3>
+          <p class="card-text mt-5">Thanks for submitting <strong>{{form_parent.title}}</strong></p>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {% elif form_parent.accept_responses == False %}
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-lg-8">
+      <div id="form_card" class="card mb-3">
+        <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
+
+        <div class="card-body py-4 px-5">
+
+          <h3 class="card-title mt-3">Form not accepting any response</h3>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {% else %}
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-lg-8">
+      <form enctype="multipart/form-data" method="POST" action="{% url 'form_submit' form_parent.unique_id %}">{% csrf_token %}
+        {% for field in form_designs %}
+        <div id="form_card" class="card mb-3">
+
+          <div class="card-body">
+            <div id="label_div" class="d-flex justify-content-between">
+              <div class="card-title label" id="label">{{field.label}}</div>
+
+
+            </div>
+
+
+            {% if field.character_field %}
+            <input style="display: none;" type="text" name="char{{field.pk}}" value="{{field.label}}">
+
+
+
+            <input name="{{field.pk}}" type="text" class="form-control" id="form_field" required>
+
+
+            {% elif field.big_text_field %}
+            <input style="display: none;" type="text" name="txt{{field.pk}}" value="{{field.label}}">
+
+            <textarea name="{{field.pk}}" class="form-control" id="form_field" rows="3" required></textarea>
+
+
+            {% elif field.integer_field %}
+            <input style="display: none;" type="text" name="int{{field.pk}}" value="{{field.label}}">
+            <input name="{{field.pk}}" type="number" class="form-control" id="form_field" required>
+
+            {% elif field.file_field %}
+            <input style="display: none;" type="text" name="file{{field.pk}}" value="{{field.label}}" required>
+            <input name="{{field.pk}}" class="form-control" type="file">
+
+            {% elif field.mcq_field %}
+            <input style="display: none;" type="text" name="mcq{{field.pk}}" value="{{field.label}}" required>
+            <ul class="list-group list-group-flush">
+              {% for i in field.choice_set.all %}
+              
+              
+
+              <li class="list-group-item">
+              <div class="form-check mt-2">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault{{field.pk}}" value="{{i.pk}}" id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                      {{i}}
+                  </label>
+              </div>
+              </li>
+              {% endfor %}
+              </ul>
+
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+
+        <button class="btn btn-primary">Submit</button>
+      </form>
+
+    </div>
+  </div>
+
+
+  {% endif %}
+
+
+</div>
+
+<br>
+<br>
+  
+{% endblock container %}
  
 
 
-    <div class="container mt-5">
-        <div class="row d-flex justify-content-center">
-          <div class="col-sm-12 col-md-12 col-lg-8">
-            <div id="form_card" class="card mb-3">
-              <img style="height:200px; object-fit: cover; border-radius: 8px;" src="{{form_parent.banner_img.url}}"
-                class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">{{form_parent.title}}</h5>
-                <p class="card-text">{{form_parent.description}}</p>
-                <span><i class="bi bi-person-fill"></i> <strong style="color: grey;">
-                    {{request.user.username}}</strong></span>
-                <p class="card-text mt-2"><small class="text-muted">From : {{form_parent.builder.user.username}}</small></p>
-              </div>
-            </div>
-      
-          </div>
-        </div>
-      
-        {% if formobj %}
-      
-        <div class="row d-flex justify-content-center">
-          <div class="col-sm-12 col-md-12 col-lg-8">
-            <div id="form_card" class="card mb-3">
-              <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
-      
-              <div class="card-body py-4 px-5">
-      
-                <h3 class="card-title mt-3">Response is recorded !!</h3>
-                <p class="card-text mt-5">Thanks for submitting <strong>{{form_parent.title}}</strong></p>
-      
-              </div>
-            </div>
-      
-          </div>
-        </div>
-      
-        {% elif form_parent.accept_responses == False %}
-        <div class="row d-flex justify-content-center">
-          <div class="col-sm-12 col-md-12 col-lg-8">
-            <div id="form_card" class="card mb-3">
-              <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
-      
-              <div class="card-body py-4 px-5">
-      
-                <h3 class="card-title mt-3">Form not accepting any response</h3>
-      
-      
-              </div>
-            </div>
-      
-          </div>
-        </div>
-      
-        {% else %}
-        <div class="row d-flex justify-content-center">
-          <div class="col-sm-12 col-md-12 col-lg-8">
-            <form enctype="multipart/form-data" method="POST" action="{% url 'form_submit' form_parent.unique_id %}">{% csrf_token %}
-              {% for field in form_designs %}
-              <div id="form_card" class="card mb-3">
-      
-                <div class="card-body">
-                  <div id="label_div" class="d-flex justify-content-between">
-                    <div class="card-title label" id="label">{{field.label}}</div>
-      
-      
-                  </div>
-      
-      
-                  {% if field.character_field %}
-                  <input style="display: none;" type="text" name="char{{field.pk}}" value="{{field.label}}">
-      
-      
-      
-                  <input name="{{field.pk}}" type="text" class="form-control" id="form_field" required>
-      
-      
-                  {% elif field.big_text_field %}
-                  <input style="display: none;" type="text" name="txt{{field.pk}}" value="{{field.label}}">
-      
-                  <textarea name="{{field.pk}}" class="form-control" id="form_field" rows="3" required></textarea>
-      
-      
-                  {% elif field.integer_field %}
-                  <input style="display: none;" type="text" name="int{{field.pk}}" value="{{field.label}}">
-                  <input name="{{field.pk}}" type="number" class="form-control" id="form_field" required>
-      
-                  {% elif field.file_field %}
-                  <input style="display: none;" type="text" name="file{{field.pk}}" value="{{field.label}}" required>
-                  <input name="{{field.pk}}" class="form-control" type="file">
-      
-                  {% elif field.mcq_field %}
-                  <input style="display: none;" type="text" name="mcq{{field.pk}}" value="{{field.label}}" required>
-                  <ul class="list-group list-group-flush">
-                    {% for i in field.choice_set.all %}
-                    
-                    
-      
-                    <li class="list-group-item">
-                    <div class="form-check mt-2">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault{{field.pk}}" value="{{i.pk}}" id="flexRadioDefault1">
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            {{i}}
-                        </label>
-                    </div>
-                    </li>
-                    {% endfor %}
-                    </ul>
-      
-                  {% endif %}
-                </div>
-              </div>
-              {% endfor %}
-      
-              <button class="btn btn-primary">Submit</button>
-            </form>
-      
-          </div>
-        </div>
-      
-      
-        {% endif %}
-      
-      
-      </div>
-      
-      <br>
-      <br>
+    
       
 
 
@@ -200,20 +147,21 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
-        crossorigin="anonymous"></script>
+   {% block js %}
 
-         <!-- fontawesome -->
-         <script src="https://use.fontawesome.com/a5af6d7eaf.js"></script>
-         <!-- end -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+   integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+   crossorigin="anonymous"></script>
 
-        <script>
-            let labels = document.getElementsByClassName("label");
-            for( i =0; i<labels.length; i++){
-                labels[i].innerHTML = labels[i].innerText
-            }
-        </script>
-</body>
+    <!-- fontawesome -->
+    <script src="https://use.fontawesome.com/a5af6d7eaf.js"></script>
+    <!-- end -->
 
-</html>
+   <script>
+       let labels = document.getElementsByClassName("label");
+       for( i =0; i<labels.length; i++){
+           labels[i].innerHTML = labels[i].innerText
+       }
+   </script>
+     
+   {% endblock js %}

@@ -1,4 +1,4 @@
-{% extends "base2.html" %}
+{% extends "dashboard-base.html" %}
 {% load static %}
 
 
@@ -19,10 +19,12 @@
 
     }
 
-    input, textarea {
+    input,
+    textarea {
         color: white !important;
     }
-    label{
+
+    label {
         color: white !important;
     }
 </style>
@@ -32,14 +34,14 @@
 
 
 {% block container %}
-<div class="d-flex justify-content-center mt-3 p-4">
-    <img style="height:100px" src="{% static 'illus1.svg' %}" alt="">
-    <h2 style="margin-left: 1rem; margin-top:2rem">Add Event</h2>
+<div class="d-flex justify-content-center mt-2 p-4">
+    <img style="height:60px" src="{% static 'illus1.svg' %}" alt="">
+    <h4 style="margin-left: 1rem; margin-top:1rem">Add Event</h4>
 </div>
 
 <!-- form -->
 
-<div class="container mt-2 p-5">
+<div class="container  px-5 py-2">
 
 
     <div class="card border-primary mb-3 p-3">
@@ -86,19 +88,25 @@
                     <option value="True">Private</option>
                 </select>
                 <br><br>
-                <label for="startTime" class="col-sm-3 col-form-label mt-2">Start Time</label>
-                <div class="col-sm-9 mt-2">
-                    <input class="form-control" type="datetime-local" id="startTime" required />
-                    <input style="display: none" class="form-control" type="datetime" id="start_time"
-                        name="start_time" />
+                <div class="row">
+                    <div class="col-6 mt-2">
+                        <label for="startTime" class="col-sm-3 col-form-label mt-2">Start Time</label>
+    
+                        <input style="color: #121212 !important; padding:0.3rem" type="datetime-local" id="startTime" required />
+                        <input style="display: none" class="form-control" type="datetime" id="start_time"
+                            name="start_time" />
+                    </div>
+                    <div class="col-6 mt-2">
+                        <label for="endTime" class="col-sm-3 col-form-label mt-2">End Time</label>
+    
+                        <input style="color: #121212 !important; padding:0.3rem" type="datetime-local" id="endTime" required />
+                        <input style="display: none" class="form-control" type="datetime" id="end_time" name="end_time" />
+                    </div>
+
                 </div>
                 <br><br>
-                <label for="endTime" class="col-sm-3 col-form-label mt-2">End Time</label>
-                <div class="col-sm-9 mt-2">
-                    <input class="form-control" type="datetime-local" id="endTime" required />
-                    <input style="display: none" class="form-control" type="datetime" id="end_time" name="end_time" />
-                </div>
-                <br><br>
+               
+
                 <div class="d-grid gap-2">
                     <button class="btn btn-outline-primary" type="submit">Submit</button>
 

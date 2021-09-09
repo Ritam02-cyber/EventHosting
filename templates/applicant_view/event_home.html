@@ -5,30 +5,16 @@
 {% block container %}
 
 
+<!-- {{event.unique_id}} -->
+
+
 <!-- input to get the start time -->
 
 <input style="display: none;" type="text" name="" id="startTime" value="{{start_time}}" >
 
 
 
-<div class="container mt-5 p-5">
-    <div class="card mb-3" >
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="{{event.poster.url}}" class="img-fluid rounded-start" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">{{event.title}}</h5>
-              <p class="card-text">{{event.description}}</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-          </div>
-        </div>
-    </div>
-</div>
 
-<br>
 {% if event_form %}
 <input style="display: none;" id="unique_id" type="text" value="{{event_form.0.unique_id}}">
   
@@ -36,14 +22,42 @@
 
 
 {% if started %}
-{% if event_form %}
+  {% if max_reached  %}
+
+  <div class="container p-3">
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Sorry Max no of participants reached!</h4>
+        <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+  </div>
+    
+
+  {% elif event_form %}
 
 
-<div class="container p-4">
-    <a class="btn btn-primary" href="{% url 'form_view' event_form.0.unique_id %}">Form Link Here</a>
-</div>
 
-{% endif %}
+
+
+  <div class="container p-3">
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Event Started  !!</h4>
+
+
+        <div style="text-align:center; font-size:2.5rem; background-color:#03dac6; padding:1rem">
+
+          <img style="border-radius: 4px;height:5rem; margin-bottom:1rem" src="{% static 'form-svg.gif'%}"/>
+          <br>
+          <a class="btn btn-primary" href="{% url 'form_view' event_form.0.unique_id %}">Form Link Here</a>
+        </div>
+        
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+  </div>
+
+  {% endif %}
   
 {% endif %}
 
@@ -65,13 +79,76 @@
     <div class="alert alert-info" role="alert">
         <h4 class="alert-heading">Event Not Started yet !!</h4>
         <p id="localDate"></p>
-        <p id="demo"></p>
+
+        <div style="text-align:center; font-size:2.5rem; background-color:#03dac6; padding:1rem">
+
+          <img style="border-radius: 4px; margin-bottom:1rem" src="{% static 'hourglass.gif'%}"/>
+          <p  id="demo"></p>
+        </div>
+        
         <hr>
         <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
     </div>
 </div>
   
 {% endif %}
+
+
+
+
+<div class="container mt-3 p-5">
+
+
+  <div style="border-radius: 20px;" class="card mb-3" id="big-card">
+    <img style="max-width:80vw; max-height: 80vh; object-fit: cover; " src="{{event.poster.url}}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h3 class="card-title">{{event.title}}</h3>
+      <p id="description" class="card-text">{{event.description}}</p>
+      <br>
+      <p><img src="https://img.icons8.com/ios-glyphs/30/ffffff/gender-neutral-user.png"/>  {{event.host}}</p>
+      <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>Max no of participants:  {{event.no_of_participants}}</p>
+      <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>No of participants:  {{event.participants.all|length}}</p>
+      <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> Start Time:  {{event.start_time|date:'Y-m-d H:i'}}</p>
+      <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> End Time:  {{event.end_time|date:'Y-m-d H:i'}}</p>
+      {% if event.type_of == 'NR' %}
+
+      <p> <img src="https://img.icons8.com/windows/32/ffffff/baby-calendar.png"/>  Normal Event</p>
+
+      {% elif event.type_of == 'GM' %}
+
+      <p> <img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/ffffff/external-gamepad-appliances-kiranshastry-solid-kiranshastry.png"/>  Gaming Event </p>
+        
+      {% endif %}
+
+      <h4><span class="badge rounded-pill bg-light text-dark mt-2">
+        
+      {% if event.result_out %}
+        Passed
+      {% else %}
+      Ongoing
+      {% endif %}
+      </span></h4>
+      
+    </div>
+  </div>
+
+</div>
+
+
+<div class="container p-4">
+
+
+  <div class="card border-primary mb-3">
+   
+    <div class="card-body text-light">
+      <h3 class="card-title mb-3">Rules</h3>
+      <p class="card-text">{{event.rules}}</p>
+ 
+    </div>
+  </div>
+
+
+</div>
   
 {% endblock container %}
 
@@ -139,5 +216,7 @@ var x = setInterval(function() {
 
 
 </script>
-  
+  <!-- fontawesome -->
+  <script src="https://use.fontawesome.com/a5af6d7eaf.js"></script>
+  <!-- end -->
 {% endblock js %}

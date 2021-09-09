@@ -17,6 +17,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
     <!-- google fonts end -->
+
+    <!-- icons -->
+    
+
+  
+
+    
 </head>
 
 
@@ -66,8 +73,45 @@
         transform: translate(0, -5px);
 
     }
-   
+    .nav-link:hover{
+
+        color: #bb86fc !important;
+    }
+   #big-card{
+    box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
+-webkit-box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
+-moz-box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
+   }
     
+   .form-control,
+    .form-select {
+        background-color: #121212 !important;
+        border: 2px solid #292929;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        color: white;
+
+
+
+
+    }
+
+    input,
+    textarea {
+        color: white !important;
+    }
+
+    label {
+        color: white !important;
+    }
+    #description{
+        max-width: 100%;
+    }
+    .list-group-item {
+    background-color: #121212;
+    color: #fff !important;
+}
 </style>
 
 {% block css %}
@@ -129,6 +173,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>
+    <script>
+         document.getElementById('description').innerHTML = document.getElementById('description').innerText;
+    </script>
+    
 </body>
 
 </html>

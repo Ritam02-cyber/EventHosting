@@ -47,7 +47,10 @@ def home(request):
 
 
 def form_view(request, unique_id):
+    
     form_parent_obj = get_object_or_404(FormParent, unique_id=unique_id)
+    if form_parent_obj.event_obj.end_time < datetime.now(timezone.utc):
+        return redirect('/event_home/' + str(form_parent_obj.event_obj.pk))
     form_designs = FormDesign.objects.filter(form_parent=form_parent_obj)
     formobj = FormObject.objects.filter(form_parent=form_parent_obj, applicant = request.user.profile)
     context ={
@@ -70,8 +73,22 @@ def event_home(request, pk):
     event_form_parent = FormParent.objects.filter(event_obj = event)
     start_time = event.start_time.strftime("%Y-%m-%d %H:%M:%S")
     print(start_time)
+    print(event.no_of_participants)
+    print(len(event.participants.all()))
+    if event.no_of_participants <= len(event.participants.all()):
+        print("No participants max")
+        context = {
+            'event': event,
+            'started':True,
+            
+            
+            'max_reached':True,
+        }
+
+
+
    
-    if event.start_time < datetime.now(timezone.utc) and event.end_time > datetime.now(timezone.utc):
+    elif event.start_time < datetime.now(timezone.utc) and event.end_time > datetime.now(timezone.utc):
         print('started, not ended')
         # event_form_parent = get_object_or_404(FormParent, event_obj = event)
         
@@ -79,7 +96,7 @@ def event_home(request, pk):
             'event': event,
             'start_time':start_time,
             'event_form':event_form_parent,
-            'started':True,
+            'started':True
         }
     elif event.start_time > datetime.now(timezone.utc):
         print('not started')
@@ -115,6 +132,8 @@ def form_submit(request, unique_id):
     start_time = form_parent_obj.event_obj.start_time
     end_time = form_parent_obj.event_obj.end_time
     event = form_parent_obj.event_obj
+    if event.no_of_participants <= len(event.participants.all()):
+        return redirect('/form_view/' + str(unique_id))
     if form_parent_obj.accept_responses == False:
         return redirect('/form_view/' + str(unique_id))
     if event.start_time < datetime.now(timezone.utc) and event.end_time > datetime.now(timezone.utc):
@@ -214,7 +233,7 @@ def add_event(request):
         end_time = request.POST.get('end_time', '')
         print(start_time)
         print(end_time)
-        print(description)
+       
         prof = Profile.objects.filter(user = request.user)[0]
   
         if poster != '':
@@ -439,7 +458,9 @@ def all_events_view_host(request):
 def winner_declaration(request, unique_id):
     event = get_object_or_404(Event, unique_id=unique_id)
     winner_positions = WinningPosition.objects.filter(event_of=event)
-
+    if len(winner_positions) != 0:
+        event.result_out =  True
+        event.save()
     if request.method == 'POST':
         position_name = request.POST.get('position', '')
         profs = request.POST.getlist('profs', '')
@@ -565,3 +586,14 @@ def log_in(request):
             return redirect('/register_home')
     else:
         raise Http404()
+
+def leaderboard(request):
+    profs = Profile.objects.all()
+    data ={}
+    for i in profs:
+        data[i] = len(Event.objects.filter(participants = i))
+    print(data)
+    context ={
+        'data': data,
+    }
+    return render(request, 'applicant_view/leaderboard.html', context)
