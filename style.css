@@ -1,0 +1,15 @@
+#mySidebar{
+display: flex;
+background-color: black;
+flex-direction: column;
+
+width: 20vw;
+
+}
+.w3-bar-item{
+    color: white;
+    text-decoration: none;
+}
+.w3-bar-item:click{
+    background-color: blueviolet;
+}
