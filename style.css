@@ -1,18 +1,261 @@
-#mySidebar{
-display: flex;
-background-color: black;
-flex-direction: column;
-position: fixed;
-top: 0;
-right: -1px;
-width: 55vw;
-height: 100vh;
-transition: width 1s ease-in;
+* {
+    margin: 0;
+    padding: 0;
 }
-.w3-bar-item{
-    color: white;
+
+.bg-primary {
+    background-color: #f7f8fa;
+}
+
+header {
+    background-color: #f7f8fa;
+    position: sticky;
+    top: 0;
+}
+
+nav {
+    background-color: #f7f8fa;
+    display: flex;
+    height: 10vh;
+    padding-top: 23px;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+body {
+
+    font-family: Poppins, sans-serif;
+}
+
+.nav {
+    display: flex;
+    margin-right: 10vw;
+}
+
+.nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+
+}
+
+nav ul li {
+    padding: 1em;
+
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+nav ul li a:hover {
+
+    color: red;
+}
+
+.navi {
+    display: flex;
+    align-items: center;
+    margin-left: 10vw;
+    padding-bottom: 1rem;
+}
+
+
+.intro {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+    padding: 45px;
+
+}
+
+.intro h1 {
+    padding: 25px;
+}
+
+.scroll-active {
+    transition-duration: 1s;
+    background-color: white;
+
+    color: black;
+    box-shadow: 2px 1px 7px;
+
+}
+
+.justify_center {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.justify_center img {
+    width: 18%;
+    height: 18%;
+    padding: 23px;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.flex input {
+    background-color: rgb(243, 81, 81, 0.5);
+    height: 3rem;
+    width: 7rem;
+    padding: 7px;
+    border-radius: 5px;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+.flex button {
+    background-color: rgba(131, 241, 109, 0.5);
+    height: 3rem;
+    width: 7rem;
+    padding: 7px;
+    border-radius: 5px;
+    border: none;
+    color: green;
+    cursor: pointer;
+}
+
+.font_size {
+    font-size: x-large;
+}
+
+.card {
+
+    display: flex;
+    flex-direction: column;
+}
+
+.card_items {
+    text-align: center;
+    width: 18vw;
+
+    color: rgb(71, 70, 70);
+    gap: 20px;
+}
+
+.flex1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3em;
+}
+
+.w3-teal {
+    display: none;
+
+}
+
+.sideflex {
+    display: none;
+
+}
+
+#mySidebar {
+
+    display: flex;
+    background-color: white;
+    box-shadow: 2px 1px 13px;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0px;
+    height: 100vh;
+    width: 0vw;
+    z-index: 1;
+    transition: width 0.25s ease-in-out;
+   
+}
+
+#mySidebar a {
+    
+    padding:1rem 1rem;
+    color: black;
     text-decoration: none;
 }
-.w3-bar-item:hover{
-    background-color: blueviolet;
+
+#mySidebar a:hover {
+  font-weight: bold;
+}
+#mySidebar .closebtn{
+   text-align: right;
+    font-size: 2em;
+    
+}
+.margin_adjust{
+    margin:0 2em;
+    text-align: center;
+}
+.contain{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media screen and (max-width:500px) {
+    .flex1 {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-gap: 10vw;
+    }
+
+    .card img {
+        width: 100px;
+    }
+
+    .card_items {
+        width: 27vw;
+
+    }
+
+    .card_items h2 {
+        font-size: medium;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .w3-teal {
+        display: flex;
+        padding: 0.5rem;
+        border: none;
+        background-color: transparent;
+        font-size: x-large;
+    }
+
+    .w3-teal button {
+        margin-bottom: 1rem;
+        padding-left: 4rem;
+    }
+
+    .sideflex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    .intro{
+        font-size: x-large;
+    }
+
+
+
 }
