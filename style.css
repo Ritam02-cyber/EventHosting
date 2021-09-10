@@ -2,14 +2,17 @@
 display: flex;
 background-color: black;
 flex-direction: column;
-
-width: 20vw;
-
+position: fixed;
+top: 0;
+right: -1px;
+width: 55vw;
+height: 100vh;
+transition: width 1s ease-in;
 }
 .w3-bar-item{
     color: white;
     text-decoration: none;
 }
-.w3-bar-item:click{
+.w3-bar-item:hover{
     background-color: blueviolet;
 }
