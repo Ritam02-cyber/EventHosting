@@ -138,8 +138,8 @@ nav ul li a:hover {
     justify-content: center;
     align-items: center;
     box-shadow: 0px 0px 12px;
-    
-   
+    border-radius: 1rem;
+   background-color: white;
     
 }
 
@@ -165,6 +165,8 @@ nav ul li a:hover {
     flex-wrap: wrap;
     justify-content: center;
     gap: 3em;
+    background-color:  #f7f8fa;
+    padding: 2rem 0;
 }
 
 .w3-teal {
@@ -217,10 +219,7 @@ nav ul li a:hover {
     justify-content: space-between;
     align-items: center;
 }
-.card img {
-    
-    box-shadow: 0px 0px 4px;
-}
+
 .flex3{
     display: flex;
     padding: 2rem;
@@ -245,14 +244,12 @@ nav ul li a:hover {
 }
 .flex4{
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
-    gap: 2em;
-    border: 2px solid black;
-    margin:2rem;
-    padding:2rem;
-    border-radius: 4rem;
+    gap:2rem;
+    flex-wrap: wrap;
 }
+
 @media screen and (max-width:500px) {
   
     .nav {
@@ -289,6 +286,17 @@ nav ul li a:hover {
         font-size: x-large;
     }
 
-
+    .card img{
+        width:150px;
+        
+    }
+    .card{
+        max-width: 150px;
+    }
+    .card2 img{
+        width:75px;
+    }
+   
+    
 
 }
