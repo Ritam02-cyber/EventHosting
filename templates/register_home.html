@@ -1,131 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-
-</head>
-
-<body>
-  {% for msg in messages %}
-
-  <div class="alert alert-{{msg.tags}}" role="alert">
-    {{msg}}
-  </div>
-
-  {% endfor %}
+{% extends "base2.html" %}
+{% load static %}
 
 
-  <div class="container mt-5">
 
-    <form method="POST" action="{% url 'register_home' %}" class="row g-3">{% csrf_token %}
-      <div class="col-md-12">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-      </div>
-      <div class="col-md-6">
-        <label for="emailaddress" class="form-label">Email</label>
-        <input type="email" class="form-control" id="emailaddress" name="email" required>
-      </div>
-      <div class="col-md-6">
-        <label for="validationDefaultUsername" class="form-label">Username</label>
-        <div class="input-group">
-          <span class="input-group-text" id="inputGroupPrepend2">@</span>
-          <input type="text" class="form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2"
-            name="username" required>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" name="password" required>
-      </div>
-      <div class="col-md-6">
-        <label for="conf_password" class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" id="conf_password" name="conf_password" required>
+{% block container %}
+
+
+
+{% for msg in messages %}
+
+<div class="alert alert-{{msg.tags}}" role="alert">
+  {{msg}}
+</div>
+
+{% endfor %}
+
+
+<div class="container mt-5">
+
+ <div class="d-flex justify-content-center">
+  <div style="border-radius: 30px; max-width: 1200px" class="card p-5">
+
+    <div class="row">
+      
+      <div class="col-lg-6 col-sm-12 py-2 text-center">
+        
+        <h2>Sign Up</h2>
+        <img style="max-width:800px; margin-top: 2rem; margin-bottom:2rem" src="{% static 'register.svg' %}" alt="">
       </div>
 
-      <div class="col-md-6">
-        <label for="validationDefault04" class="form-label">Type Of Account</label>
-        <select name="type_of_account" class="form-select" id="validationDefault04" required>
-          <option selected value="NM">Participant</option>
-          <option value="HS">Host</option>
-        </select>
-      </div>
+      <div class="col-lg-6 col-sm-12">
+        <form method="POST" action="{% url 'register_home' %}" class="row g-3">{% csrf_token %}
+          <div class="col-md-12 mb-5">
 
-      <div class="col-12">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-          <label class="form-check-label" for="invalidCheck2">
-            Agree to <a href="#">terms and conditions</a>
-          </label>
-        </div>
-      </div>
-      <div class="col-12">
-        <button class="btn btn-primary" type="submit">Make Account</button>
-      </div>
-    </form>
-    <br><br>
-    <center>Already have an account?</center>
-    <center><button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button></center>
-  </div>
+            <div class="d-flex flex-row">
+              <label style="margin-right: 0.8rem;" for="name" class="form-label"><img style="margin-top: 0.6rem; " src="https://img.icons8.com/ios-filled/30/ffffff/security-user-male.png"/></label>
+              <input style="margin-bottom: 0.3rem;" type="text" class="form-control" id="name" name="name" placeholder="Name" required>
 
-
-
-
-  <!-- modal start -->
-
-
-  <!-- Button trigger modal -->
- 
-
-  <!-- Modal -->
-  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="loginModalLabel">Login</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="container">
-
-            <form action="{% url 'log_in' %}" method="POST" id="loginform">{% csrf_token %}
-              <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" id="username" required>
-                
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" id="password" required>
-              </div>
-              
+            </div>
            
-            </form>
-
-
           </div>
+          <div class="col-md-12 mb-5">
+            <div class="d-flex flex-row">
+
+              <label style="margin-right: 0.8rem;" for="emailaddress" class="form-label"><img style="margin-top: 0.6rem; " src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/34/ffffff/external-email-cyber-security-kiranshastry-solid-kiranshastry-2.png"/></label>
+              <input style="margin-bottom: 0.3rem;" type="email" class="form-control" id="emailaddress" name="email" placeholder="Email" required>
+
+
+            </div>
+            
+          </div>
+          <div class="col-md-12 mb-5">
+            <div class="d-flex flex-row">
+
+              <label style="margin-right: 0.8rem;" for="validationDefaultUsername" class="form-label"><img style="margin-top: 0.6rem; " src="https://img.icons8.com/ios-glyphs/30/ffffff/name.png"/></label>
+              <div class="input-group">
+               
+                <input style="margin-bottom: 0.3rem;" type="text" class="form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2"
+                  name="username" placeholder="Username" required>
+              </div>
+
+            </div>
+            
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex flex-row">
+              <label style="margin-right: 0.8rem;" for="password" class="form-label"><img style="margin-top: 0.6rem; " src="https://img.icons8.com/ios-glyphs/30/ffffff/password.png"/></label>
+              <input style="margin-bottom: 0.3rem;" type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+
+            </div>
+            
+          </div>
+          <div class="col-md-6 mb-5">
+            <div class="d-flex flex-row">
+
+              <label style="margin-right: 0.8rem;" for="conf_password" class="form-label"><img style="margin-top: 0.6rem; " src="https://img.icons8.com/material-rounded/30/ffffff/password1.png"/></label>
+              <input style="margin-bottom: 0.3rem;" type="password" class="form-control" id="conf_password" name="conf_password" placeholder="Confirm Password" required>
+
+            </div>
+            
+          </div>
+      
+          <div class="col-md-6">
+            <label for="validationDefault04" class="form-label">Type Of Account</label>
+            <select  name="type_of_account" class="form-select" id="validationDefault04" required>
+              <option style="padding: 1rem" selected value="NM">Participant</option>
+              <option style="padding: 1rem" value="HS">Host</option>
+            </select>
+          </div>
+      
+          <div class="col-12 mt-5">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+              <label class="form-check-label" for="invalidCheck2">
+                Agree to <a href="#">terms and conditions</a>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 mt-5">
+            <div class="d-grid gap-2">
+              <button id="block-btn" class="btn btn-primary" type="submit">Make Account</button>
+            </div>
+            
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+ </div>
+
+ 
+  <br><br>
+  <center>Already have an account?</center>
+  <center><button class="btn btn-primary mt-3 btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+  </center>
+
+  <br><br>
+</div>
+
+
+
+
+<!-- modal start -->
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <h5 class="modal-title " id="loginModalLabel"> <img style="margin-bottom: 0.2rem; margin-right: 0.3rem" src="https://img.icons8.com/material-outlined/24/ffffff/login-rounded-right.png"/> Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+
+          <form action="{% url 'log_in' %}" method="POST" id="loginform">{% csrf_token %}
+            <div class="mb-3">
+              <label for="username" class="form-label"><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/ios/30/ffffff/username.png"/> Username</label>
+              <input type="text" name="username" class="form-control" id="username" required>
+
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label"><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/material-outlined/30/ffffff/password.png"/> Password</label>
+              <input type="password" name="password" class="form-control" id="password" required>
+            </div>
+
+
+          </form>
+
+
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" form="loginform" class="btn btn-primary">Login</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" form="loginform" class="btn btn-outline-info">Login</button>
       </div>
     </div>
   </div>
+</div>
 
 
 
-  <!-- modal end -->
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
-    crossorigin="anonymous"></script>
-</body>
-
-</html>
+{% endblock container %}

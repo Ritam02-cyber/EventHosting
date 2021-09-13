@@ -162,7 +162,7 @@
    .form-control,
     .form-select {
         background-color: #121212 !important;
-        border: 2px solid #292929;
+        border: 2px solid #03dac5;;
         border-top: none;
         border-right: none;
         border-left: none;
@@ -252,6 +252,20 @@
     color: #fff !important;
 }
 
+#nav-link{
+    color: #03dac5;
+}
+.modal-content{
+    background-color:#292929 ;
+    border-radius: 12px;
+}
+.modal-header{
+    border-bottom: none;
+}
+.modal-footer{
+    border-top: none
+}
+
 </style>
 {% block css %}
   
@@ -294,25 +308,30 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 ">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">EaseForm</span>
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none mt-1">
+                        <span class="fs-5 d-none d-sm-inline"><img style="height:2.5rem" src="{% static 'logo.png' %}" alt=""></span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
-                            <a href="/" class="nav-link align-middle px-0">
+                            <a id="nav-link" href="/" class="nav-link align-middle px-0">
                                 <i class="fas fa-home"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link align-middle px-0">
-                                <i class="fas fa-file-alt"></i> <span class="ms-1 d-none d-sm-inline">Forms</span>
+                            <a id="nav-link" href="{% url 'events_list_host' %}" class="nav-link align-middle px-0">
+                                <i class="fas fa-file-alt"></i> <span class="ms-1 d-none d-sm-inline">Events</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="nav-link" href="{% url 'add_event' %}" class="nav-link align-middle px-0">
+                                <i class="far fa-plus-square"></i> <span class="ms-1 d-none d-sm-inline">Add Event</span>
                             </a>
                         </li>
                         
-                        <li>
-                            <a href="" class="nav-link px-0 align-middle">
-                                <i class="fas fa-edit"></i> <span class="ms-1 d-none d-sm-inline">Make Form</span></a>
-                        </li>
+                        <!-- <li>
+                            <a id="nav-link" href="#" class="nav-link px-0 align-middle">
+                                <i class="fas fa-edit"></i> <span class="ms-1 d-none d-sm-inline">Winner </span></a>
+                        </li> -->
                      
                     </ul>
                     <hr>
@@ -324,16 +343,16 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                             
-                            <li><a class="dropdown-item" href="">Forms</a></li>
+                            <!-- <li><a class="dropdown-item" href="">Forms</a></li>
                             <li><a class="dropdown-item" href="">Make Form</a></li>
                             <li>
                                 <hr class="dropdown-divider">
-                            </li>
+                            </li> -->
                             {% if request.user.is_authenticated %}
 
-                            <li><a class="dropdown-item" href="">Log out</a></li>
+                            <li><a class="dropdown-item" href="{% url 'log_out' %}">Log out</a></li>
                             {% else %}
-                            <li><a class="dropdown-item" href="">Sign Up</a></li>
+                            <li><a class="dropdown-item" href="{% url 'register_home' %}">Sign Up</a></li>
 
                               
                             {% endif %}

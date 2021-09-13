@@ -19,7 +19,7 @@
     <!-- google fonts end -->
 
     <!-- icons -->
-    
+      
 
   
 
@@ -81,12 +81,14 @@
     box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
 -webkit-box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
 -moz-box-shadow: -4px 1px 22px 3px rgba(137,44,220,0.68);
+    width: 1000px;
+    max-width: 95vw;
    }
     
    .form-control,
     .form-select {
         background-color: #121212 !important;
-        border: 2px solid #292929;
+        border: 2px solid #03dac5;
         border-top: none;
         border-right: none;
         border-left: none;
@@ -112,6 +114,62 @@
     background-color: #121212;
     color: #fff !important;
 }
+
+#block-btn{
+    background-color: #03dac5;
+    border: #03dac5;
+    color: #fff 
+}
+#block-btn:hover{
+    transform: translate(0, -2px);
+    background-color:#01a299
+
+}
+.modal-content{
+    background-color:#292929 ;
+    border-radius: 12px;
+}
+.modal-header{
+    border-bottom: none;
+}
+.modal-footer{
+    border-top: none
+}
+#flush-list{
+    padding: 1.3rem;
+    padding-right:1.5rem;
+    padding-left: 1.5rem;
+    border-color: #01a299;
+}
+.carousel {
+  width:640px;
+  max-width: 85vw;
+  height:360px;
+  margin-bottom: 6rem;
+  
+}
+#carousel-img{
+    width: 640px;
+    height:360px;
+    max-width:90vw;
+    object-fit: cover;
+    border-radius:12px;
+    /* border-top-right-radius: 4rem; */
+}
+#carousel-card{
+    height:100%;
+    width:100%;
+
+    
+}
+#tag{
+    text-decoration: none;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+}
+#icons{
+    width: 5rem;
+}
 </style>
 
 {% block css %}
@@ -122,13 +180,14 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid ">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="/"><img style="height:2.5rem" src="{% static 'logo.png' %}" alt=""></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav ">
                     <a class="nav-link active px-3 py-4 " aria-current="page" href="/">Home</a>
                     <a class="nav-link active px-3 py-4 " href="{% url 'add_event' %}">Add Events</a>
@@ -136,6 +195,26 @@
                     <a class="nav-link active  px-3 py-4 disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </div>
             </div>
+
+
+            <div class="justify-content-end px-3 collapse navbar-collapse" id="navbarNavAltMarkup">
+                {% if request.user.is_authenticated %}
+                <div class="dropdown navbar-nav">
+                    <a href="#" class="text-white text-decoration-none dropdown-toggle nav-link active" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{request.user.profile.dp.url}}" alt="" width="35" height="35" class="rounded-circle">
+                        {{request.user}}
+                    </a>
+                    <ul style="margin-right: 3rem; min-width:6rem" class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" href="{% url 'log_out' %}">Log out</a></li>
+                    </ul>
+                </div>
+                
+                  
+                {% else %}
+                <a href="{% url 'register_home' %}" id="block-btn" class=" btn btn-primary">Signup</a>
+                {% endif %}
+            </div>
+            
         </div>
     </nav>
 

@@ -30,11 +30,13 @@ def convert_time(time):
 
 
 def home(request):
-    events = Event.objects.filter(status= True, restricted = False).order_by('-created_time')[:5]
+    events = Event.objects.filter(status= True, restricted = False, ).order_by('-created_time')[:5]
     event_list =[]
     for event in events:
+        # print(event)
         winning_positions = WinningPosition.objects.filter(event_of = event)
         if len(winning_positions) == 0:
+            print(event)
             event_list.append(event)
 
 
@@ -210,6 +212,18 @@ def form_submit(request, unique_id):
         }
         return render(request, 'applicant_view/form_submit_error.html',context)
 
+def add_group(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        description = request.POST.get('description', '')
+        poster = request.FILES.get('poster', '')
+        if poster != '':
+            group = EventGroup(name=name, description=description, poster=poster, creator = request.user.profile)
+        else:
+            group = EventGroup(name=name, description=description,  creator = request.user.profile)
+        group.save()
+        return redirect('/add_event')
+
 
 
 
@@ -217,6 +231,7 @@ def form_submit(request, unique_id):
 
 def add_event(request):
     events = Event.objects.all()
+    groups = EventGroup.objects.all()
     
     if request.method == 'POST':
 
@@ -231,12 +246,16 @@ def add_event(request):
         print(restriction)
         start_time = request.POST.get('start_time', '')
         end_time = request.POST.get('end_time', '')
+        tags = request.POST.get('tags', '')
+        group = request.POST.get('group', '')
         print(start_time)
         print(end_time)
+        print(tags)
+
        
         prof = Profile.objects.filter(user = request.user)[0]
   
-        if poster != '':
+        if poster != '' and group != '':
             event = Event(
                 title = name,
                 description = description,
@@ -248,9 +267,10 @@ def add_event(request):
                 no_of_participants=no_of_participants, 
                 start_time=start_time, 
                 end_time=end_time, 
+                group=EventGroup.objects.filter(pk = group)[0]
            
                 )
-        else:
+        elif poster == '' and group =='':
             event = Event(
                 title = name,
                 description = description,
@@ -264,12 +284,60 @@ def add_event(request):
                 end_time=end_time, 
                
                 )
+        elif poster !='' and group =='':
+            event = Event(
+                title = name,
+                description = description,
+                rules = rules, 
+                # poster = poster,
+                type_of = type_, 
+                restricted = restriction,
+                host = prof, 
+                no_of_participants=no_of_participants, 
+                start_time=start_time, 
+                end_time=end_time, 
+                poster = poster,
+               
+                )
+        elif poster == '' and group != '':
+            event = Event(
+                title = name,
+                description = description,
+                rules = rules, 
+                # poster = poster,
+                type_of = type_, 
+                restricted = restriction,
+                host = prof, 
+                no_of_participants=no_of_participants, 
+                start_time=start_time, 
+                end_time=end_time, 
+                group=EventGroup.objects.filter(pk = group)[0]
+                )
 
         event.save()
+
+        # tagging
+        tags = tags.split(',')
+        print(tags)
+        for tag in tags:
+            tag = tag.replace(" ", "")
+            tag = tag.upper()
+            tag_obj = Tag.objects.filter(name = tag)
+            if tag_obj:
+                tag_obj[0].event.add(event)
+                # tag_obj.save()
+            else:
+                obj = Tag(name = tag)
+                obj.save()
+                obj.event.add(event)
+                
+
+            print(tag)
         return redirect('/add_form_parent/' + str(event.id))
 
     context = {
-        'events': events
+        'events': events,
+        'groups': groups,
 
     }
     return render(request, "add_event.html", context)
@@ -391,7 +459,7 @@ def event_view_host(request, pk):
 def responses(request, pk):
     form_parent = FormParent.objects.filter(pk =pk)
     data_dict ={}
-    # print(form_parent)
+    print(form_parent)
     if form_parent and request.user.profile == form_parent[0].event_obj.host:
         
 
@@ -447,13 +515,13 @@ def accept_responses_toggle(request, pk):
         raise Http404()
 
 
-def all_events_view_host(request):
-    events = Event.objects.filter(host = request.user.profile)
-    context ={
-        'events': events,
-    }
+# def all_events_view_host(request):
+#     events = Event.objects.filter(host = request.user.profile)
+#     context ={
+#         'events': events,
+#     }
 
-    return render(request,'all_events_view_host.html', context)
+#     return render(request,'all_events_view_host.html', context)
 
 def winner_declaration(request, unique_id):
     event = get_object_or_404(Event, unique_id=unique_id)
@@ -597,3 +665,49 @@ def leaderboard(request):
         'data': data,
     }
     return render(request, 'applicant_view/leaderboard.html', context)
+
+def profile(request, username):
+    user_obj = get_object_or_404(User, username=username)
+    events = Event.objects.filter(participants = user_obj.profile)
+    context ={
+        'user_obj':user_obj,
+        'events':events,
+    }
+    return render(request, 'applicant_view/profile.html',context)
+def events_list_host(request):
+    events = Event.objects.filter(host= request.user.profile).order_by('-created_time')
+    context = {
+        'events':events,
+    }
+
+    return render(request, 'events_list_host.html', context)
+
+def contact_host(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if request.method == 'POST':
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+
+        c = {'sub':subject,'message':message }
+        text_content = render_to_string('email_templates/email.txt', c)
+        html_content = render_to_string('email_templates/email.html', c)
+
+        email = EmailMultiAlternatives(subject, text_content)
+        email.attach_alternative(html_content, "text/html")
+        email.to = [event.host.user.email]
+        
+        email.send()
+
+        return redirect('/event_home/' + str(event.pk))
+
+def delete_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if request.user.profile == event.host:
+        event.delete()
+        return redirect('/events_list_host')
+
+def log_out(request):
+    logout(request)
+    return redirect("/")    
+
+

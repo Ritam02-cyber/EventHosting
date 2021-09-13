@@ -1,6 +1,18 @@
 {% extends "base2.html" %}
 
 {% load static %}
+{% block css %}
+<style>
+  .modal-dialog{
+      /* width: 1000px; */
+      /* min-width: 80vw; */
+      max-width: 800px ;
+      /* width: 80vw; */
+
+  }
+</style>
+  
+{% endblock css %}
 
 {% block container %}
 
@@ -96,44 +108,60 @@
 
 
 
-<div class="container mt-3 p-5">
+<div class="container mt-3 p-3">
 
-
-  <div style="border-radius: 20px;" class="card mb-3" id="big-card">
-    <img style="max-width:80vw; max-height: 80vh; object-fit: cover; " src="{{event.poster.url}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h3 class="card-title">{{event.title}}</h3>
-      <p id="description" class="card-text">{{event.description}}</p>
-      <br>
-      <p><img src="https://img.icons8.com/ios-glyphs/30/ffffff/gender-neutral-user.png"/>  {{event.host}}</p>
-      <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>Max no of participants:  {{event.no_of_participants}}</p>
-      <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>No of participants:  {{event.participants.all|length}}</p>
-      <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> Start Time:  {{event.start_time|date:'Y-m-d H:i'}}</p>
-      <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> End Time:  {{event.end_time|date:'Y-m-d H:i'}}</p>
-      {% if event.type_of == 'NR' %}
-
-      <p> <img src="https://img.icons8.com/windows/32/ffffff/baby-calendar.png"/>  Normal Event</p>
-
-      {% elif event.type_of == 'GM' %}
-
-      <p> <img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/ffffff/external-gamepad-appliances-kiranshastry-solid-kiranshastry.png"/>  Gaming Event </p>
+  <div class="d-flex justify-content-center">
+    <div style="border-radius: 20px;" class="card mb-3" id="big-card">
+      <img style=" max-height: 70vh; object-fit: cover; " src="{{event.poster.url}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h3 class="card-title">{{event.title}}</h3>
+        <p id="description" class="card-text">{{event.description}}</p>
+        <br>
+        <p><img src="https://img.icons8.com/ios-glyphs/30/ffffff/gender-neutral-user.png"/>  {{event.host}}</p>
+        <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>Max no of participants:  {{event.no_of_participants}}</p>
+        <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>No of participants:  {{event.participants.all|length}}</p>
+        <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> Start Time:  {{event.start_time|date:'Y-m-d H:i'}}</p>
+        <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> End Time:  {{event.end_time|date:'Y-m-d H:i'}}</p>
+        {% if event.type_of == 'NR' %}
+  
+        <p> <img src="https://img.icons8.com/windows/32/ffffff/baby-calendar.png"/>  Normal Event</p>
+  
+        {% elif event.type_of == 'GM' %}
+  
+        <p> <img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/ffffff/external-gamepad-appliances-kiranshastry-solid-kiranshastry.png"/>  Gaming Event </p>
+          
+        {% endif %}
+        <p>
+          {% for tag in event.tag_set.all %}
+  
+          <a id="tag" href="">#{{tag}}</a>
+            
+          {% endfor %}
+        </p>
+  
+        <h4><span class="badge rounded-pill bg-light text-dark mt-2">
+          
+        {% if event.result_out %}
+          Passed
+        {% else %}
+        Ongoing
+        {% endif %}
+        </span></h4>
         
-      {% endif %}
-
-      <h4><span class="badge rounded-pill bg-light text-dark mt-2">
-        
-      {% if event.result_out %}
-        Passed
-      {% else %}
-      Ongoing
-      {% endif %}
-      </span></h4>
-      
+      </div>
     </div>
+
   </div>
+  
 
 </div>
 
+
+<center><!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#contactModal" id="block-btn">
+    <img style="margin-right: 0.2rem;" src="https://img.icons8.com/ios/24/000000/outgoing-call.png"/> Contact Host
+  </button>
+</center>
 
 <div class="container p-4">
 
@@ -149,6 +177,61 @@
 
 
 </div>
+
+<!-- modal start -->
+
+<!-- Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="contactModalLabel">Contact Host</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ">
+        <div class="card">
+         
+          <div class="card-body">
+            <a style="text-decoration: none; " href=""><img style="margin-bottom: 0.1rem; margin-right: 0.5rem" src="https://img.icons8.com/ios-glyphs/20/ffffff/user-male-circle.png"/> {{event.host}}</a>
+            <p style="margin-top: 1rem;"><img style="margin-bottom: 0.1rem; margin-right: 0.5rem" src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/24/ffffff/external-email-cv-resume-flatart-icons-outline-flatarticons.png"/>
+               {{event.host.user.email}}</p>
+
+            <p style="margin-top: 1rem;"><img style="margin-bottom: 0.1rem; margin-right: 0.5rem" src="https://img.icons8.com/material-outlined/24/ffffff/phone.png"/>{{event.host.phone}}</p>
+
+
+          </div>
+
+        </div>
+        <div class="container p-4 mt-3">
+          <div class="d-flex justify-content-center">
+            <h4> <img style="margin-bottom: 0.1rem; margin-right: 0.5rem" src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/34/ffffff/external-email-cv-resume-flatart-icons-outline-flatarticons.png"/> Send mail</h4>
+          </div>
+          <form action="{% url 'contact_host'  event.pk %}" method="POST">{% csrf_token %}
+
+            <div class="mb-3 mt-3">
+              <label for="subject" class="form-label">Subject</label>
+              <input type="text" class="form-control" id="subject" name="subject"  required>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea class="form-control" id="message" rows="4" name='message' required>
+              </textarea>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+              <button id="block-btn" class="btn btn-primary" type="submit">Submit</button>
+            </div>
+
+          </form>
+         
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+
+
   
 {% endblock container %}
 

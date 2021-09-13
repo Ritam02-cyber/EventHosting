@@ -17,6 +17,9 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=100,default=" ")
     type_of = models.CharField(max_length=2, choices=TYPE_OF_PROFILE,default='NR')
+    dp = models.ImageField(upload_to= 'dp', default = 'avatar.png')
+    phone = models.BigIntegerField(null=True, blank=True)
+    address = models.CharField(max_length=50, blank=True, null=True)
     def __str__(self):
         return str(self.user)
 
@@ -24,15 +27,23 @@ class Profile(models.Model):
 #     prof = models.OneToOneField(Profile, on_delete = models.CASCADE)
 #     def __str__(self):
 #         return str(self.prof.user.username)
+class EventGroup(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    poster = models.ImageField(upload_to = 'group_posters', default ='groupbanner.png')
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
 
 class Event(models.Model):
     title = models.CharField(max_length=400)
     unique_id = models.UUIDField(default=uuid.uuid4, editable=False)
     description = models.TextField(blank=True, null= True)
-    poster = models.ImageField(upload_to= 'posters',default = 'banner.png')
+    poster = models.ImageField(upload_to= 'posters',default = 'poster.png')
     rules = models.TextField(blank=True, null=True)
     type_of = models.CharField(max_length=2, choices=TYPE_OF_EVENT,default='NR')
     host = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    group = models.ForeignKey(EventGroup, on_delete=models.CASCADE, null=True, blank=True)
     no_of_participants  = models.IntegerField(default=0, blank=True, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -44,6 +55,13 @@ class Event(models.Model):
     def __str__(self):
         return str(self.title) + ' from ' + str(self.host)
 
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=20)
+    event = models.ManyToManyField(Event)
+    def __str__(self):
+        return str(self.name) 
 
 
 class WinningPosition(models.Model):
@@ -152,5 +170,8 @@ class Choice(models.Model):
     mcq_parent = models.ForeignKey(FormDesign, on_delete= models.CASCADE)
     def __str__(self):
         return self.name
+
+
+
 
 

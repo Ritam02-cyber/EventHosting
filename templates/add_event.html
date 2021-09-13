@@ -3,67 +3,71 @@
 
 
 {% block css %}
-
 <style>
-    .form-control,
-    .form-select {
-        background-color: #121212 !important;
-        border: 2px solid #292929;
-        border-top: none;
-        border-right: none;
-        border-left: none;
-        color: white;
+    .select2-container .select2-selection--single{
+    height:34px !important;
+}
+.select2-container--default .select2-selection--single{
+         border: 1px solid #ccc !important; 
+     border-radius: 0px !important; 
+}
+.select2{
+    border-radius: 4px;
+}
 
+.select2-dropdown{
+    background-color: #292929 !important;
 
+}
+.select2-dropdown  input{
+    color: #121212 !important;
+}
+.modal-dialog{
+      /* width: 1000px; */
+      /* min-width: 80vw; */
+      max-width: 800px ;
+      /* width: 80vw; */
 
-
-    }
-
-    input,
-    textarea {
-        color: white !important;
-    }
-
-    label {
-        color: white !important;
-    }
+  }
 </style>
+
+
 
 {% endblock css %}
 
 
 
 {% block container %}
-<div class="d-flex justify-content-center mt-2 p-4">
+<!-- <div class="d-flex justify-content-center mt-2 p-4">
     <img style="height:60px" src="{% static 'illus1.svg' %}" alt="">
     <h4 style="margin-left: 1rem; margin-top:1rem">Add Event</h4>
-</div>
+</div> -->
 
 <!-- form -->
 
-<div class="container  px-5 py-2">
+<div class="container px-4 py-2">
 
 
-    <div class="card border-primary mb-3 p-3">
+    <div class="card border-dark mb-3 p-3">
 
         <div class="card-body text-primary">
-            <h3 style=" font-size: 900;" class="card-title mb-5">Add Details</h3>
-            <br><br>
-            <form enctype="multipart/form-data" action="{% url 'add_event' %}" method="POST">
+            <h3 style=" font-size: 900;" class="card-title mb-5"> Add Details <img style="height:30px" src="{% static 'illus1.svg' %}" alt=""></h3>
+            
+            <form enctype="multipart/form-data" action="{% url 'add_event' %}" method="POST" id="add_event">
                 {% csrf_token %}
                 <div class="mb-5">
                     <label for="exampleFormControlInput1" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="name" />
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="name" required/>
                 </div>
                 <div class="mb-5">
                     <label for="exampleFormControlTextarea1" class="form-label">
                         Description</label>
-                    <textarea class="form-control" id="mytextarea" rows="5" name="description"></textarea>
+                    <textarea class="form-control" id="mytextarea" rows="5" name="description" ></textarea>
                 </div>
                 <div class="mb-5">
                     <label for="exampleFormControlTextarea1" class="form-label">
                         Rules</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="rules"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="rules" required></textarea>
                 </div>
                 <div class="mb-5">
                     <label for="formFile" class="form-label">Poster</label>
@@ -72,7 +76,7 @@
                 <br>
                 <div>
                     <label for="exampleFormControlInput1" class="form-label">No of Participants</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" name="no_of_participants" />
+                    <input type="number" class="form-control" id="exampleFormControlInput1" name="no_of_participants" required/>
                 </div>
 
                 <br><br>
@@ -89,14 +93,14 @@
                 </select>
                 <br><br>
                 <div class="row">
-                    <div class="col-6 mt-2">
+                    <div class="col-lg-6 col-sm-12 mt-2">
                         <label for="startTime" class="col-sm-3 col-form-label mt-2">Start Time</label>
     
                         <input style="color: #121212 !important; padding:0.3rem" type="datetime-local" id="startTime" required />
                         <input style="display: none" class="form-control" type="datetime" id="start_time"
                             name="start_time" />
                     </div>
-                    <div class="col-6 mt-2">
+                    <div class="col-lg-6 col-sm-12 mt-2">
                         <label for="endTime" class="col-sm-3 col-form-label mt-2">End Time</label>
     
                         <input style="color: #121212 !important; padding:0.3rem" type="datetime-local" id="endTime" required />
@@ -104,22 +108,102 @@
                     </div>
 
                 </div>
+
+                <div class="mt-5">
+                    <label for="tags" class="form-label">Tags</label>
+                    <input type="text" class="form-control" id="tags" name="tags" aria-describedby="tagHelp" required/>
+                    <div id="tagHelp" class="form-text">separate multiple tags with comma and lower case letters are suggested</div>
+                </div>
+
+                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+                <div class="mt-5 ">
+                    <label class="form-label">Group Selection</label>
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-6">
+
+                            <form style="max-width: 90%;" disabled>
+                                
+                                <br>
+                                <select name="group" class="form-control select2">
+                                    <option>Group</option>
+                                    {% for i in groups %}
+                                    <option value="{{i.pk}}">{{i.name}}</option> 
+                                    {% endfor %}
+                                   
+                                  
+                                </select>
+                            </form>
+    
+                        </div>
+                        <div class="col-lg-4 col-sm-12 mt-4">
+                            <a type="button"   data-bs-toggle="modal" data-bs-target="#groupAddModal" style="text-decoration: none;" href="#">Group <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+                              </svg></a>
+                        </div>
+                    </div>
+                  
+                   
+                      
+                </div>
                 <br><br>
                
 
-                <div class="d-grid gap-2">
-                    <button class="btn btn-outline-primary" type="submit">Submit</button>
-
-                </div>
+                
             </form>
+            <div class="d-grid gap-2">
+                <button id="sub-btn" form="add_event" class="btn btn-outline-primary" type="submit">Submit</button>
+
+            </div>
         </div>
     </div>
 
 </div>
 
+
+<!-- modal start -->
+
+<!-- Modal -->
+<div class="modal fade" id="groupAddModal" tabindex="-1" aria-labelledby="groupAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="groupAddModalLabel">Make a group</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="groupaddform" method="POST" action="{% url 'add_group' %}" class="p-4">{% csrf_token %}
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Group Title</label>
+                <input type="text" name="name" class="form-control" id="exampleFormControlInput1" required>
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label" required>Description</label>
+                <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="formFile" class="form-label">Poster</label>
+                <input name="poster" class="form-control" type="file" id="formFile">
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="groupaddform" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock container %}
 
 {% block js %}
+
+<script>
+    $('.select2').select2();
+</script>
 
 
 <script>
@@ -143,7 +227,10 @@
 
         // console.log(d);
         if (e <= document.getElementById("start_time").value) {
-            alert("End Time Must Be After Start Time")
+            alert("End Time Must Be After Start Time");
+            document.getElementById("sub-btn").type = 'button';
+        }else{
+            document.getElementById("sub-btn").type = 'submit';
         }
     });
 

@@ -12,12 +12,14 @@
                     <img id="card-thumb-top" src="{{event.poster.url}}" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">{{event.title}}</h5>
-                      <p class="card-text">{{event.description|truncatechars:200}}</p>
+                      <p id="description" class="card-text description">{{event.description|truncatechars:200}}</p>
                     </div>
+                    {% if event.formparent %}
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
                         <a href="{% url 'event_view_host' event.pk%}" class="card-link">View</a>
                       </li>
+                      
                       <li class="list-group-item">
                         <a href="{% url 'add_form_fields' event.formparent.pk %}" class="card-link">Form</a>
                       </li>
@@ -29,6 +31,8 @@
                       </li>
                       
                     </ul>
+                    {% endif %}
+                    
                     <div class="card-body">
                    
                      
@@ -41,3 +45,13 @@
     </div>
 
 {% endblock container %}
+
+{% block js %}
+<script>
+  var descs= document.getElementsByClassName("description")
+ for( i=0;  i<descs.length; i++){
+   descs[i].innerHTML = descs[i].innerText;
+ }
+</script>
+  
+{% endblock js %}
