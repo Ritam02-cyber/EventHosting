@@ -25,5 +25,8 @@ urlpatterns =[
     path('contact_host/<int:pk>', views.contact_host, name='contact_host'),
     path('delete_event/<int:pk>', views.delete_event, name='delete_event'),
     path('add_group', views.add_group,name='add_group'),
+    path('group_view/<int:pk>', views.group_view, name="group_view"),
+    path('all_events', views.all_events, name='all_events'),
+    path('all_groups', views.all_groups, name='all_groups'),
     path('log_out', views.log_out, name='log_out')
 ]

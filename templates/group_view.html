@@ -1,0 +1,100 @@
+{% extends "base2.html" %}
+
+{% block container %}
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-lg-5 col-md-6 col-sm-12 mt-4">
+            <img style="max-width:100%; border-radius:1rem" src="{{group.poster.url}}" class="img-fluid " alt="">
+        </div>
+        <div class="col-lg-7 col-md-6 col-sm-12 mt-4">
+            <div class="card border-dark mb-3">
+                <div style="font-size: x-large;" class="card-header">{{group.name}}</div>
+                <div class="card-body text-white">
+                  
+                  <p class="card-text">{{group.description}}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="card p-4">
+            <div style="font-size: x-large; margin-bottom:2rem" class="card-header">Events</div>
+            <div class="row">
+                {% for event in current_events %}
+                    <div class="col-lg-3 col-sm-6 mb-3">
+                        <a style="text-decoration: none; " href="{% url 'event_home' event.pk %}">
+                            <div style="background-color: #292929; margin-right: 1rem;" class="card" id="card">
+                                <img style="height:200px; object-fit:cover" src="{{event.poster.url}}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h6 class="card-title">{{event.title}}</h6>
+                                  <h6><span class="badge rounded-pill bg-light text-dark mt-2">
+        
+                                    {% if event.result_out %}
+                                      Passed
+                                    {% else %}
+                                    Ongoing
+                                    {% endif %}
+                                    </span>
+                                  </h6>
+                                </div>
+                                <div class="card-footer">
+                                  <small class="text-muted">{{event.start_time.date}}</small>
+                                 
+    
+                                </div>
+                            </div>
+
+                        </a>
+                        
+
+                    </div>
+                    
+                    {% endfor %}
+            </div>
+            <br>
+            {% if past_events %}
+              
+            
+            <h3 class="text-center">Past events</h3>
+            <div class="row">
+                {% for event in past_events %}
+                    <div class="col-lg-3 col-sm-6 mb-3">
+                        <a style="text-decoration: none; " href="{% url 'event_home' event.pk %}">
+                            <div style="background-color: #292929; margin-right: 1rem;" class="card" id="card">
+                                <img style="height:200px; object-fit:cover" src="{{event.poster.url}}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                  <h6 class="card-title">{{event.title}}</h6>
+                                  <h6><span class="badge rounded-pill bg-light text-dark mt-2">
+        
+                                    {% if event.result_out %}
+                                      Passed
+                                    {% else %}
+                                    Ongoing
+                                    {% endif %}
+                                    </span>
+                                  </h6>
+                                </div>
+                                <div class="card-footer">
+                                  <small class="text-muted">{{event.start_time.date}}</small>
+                                 
+    
+                                </div>
+                            </div>
+
+                        </a>
+                        
+
+                    </div>
+                    
+                    {% endfor %}
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+</div>
+  
+{% endblock container %}

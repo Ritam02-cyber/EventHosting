@@ -39,14 +39,35 @@ def home(request):
             print(event)
             event_list.append(event)
 
-
+    groups = EventGroup.objects.all()
     context ={
         'events':event_list,
+        'groups':groups,
     }
     return render(request, 'home.html', context)
 
 
+def all_events(request):
+    current_events = Event.objects.filter(result_out =False).order_by('-created_time')
+    past_events = Event.objects.filter(result_out= True).order_by('-created_time')
+    context = {'current_events':current_events, 'past_events':past_events}
+    return render(request, 'applicant_view/all_events_view.html', context)
 
+def all_groups(request):
+    groups = EventGroup.objects.all()
+    context = {'groups':groups}
+    return render(request, 'applicant_view/all_groups_view.html', context)
+
+def group_view(request, pk):
+    group = get_object_or_404(EventGroup, pk=pk)
+    past_events = Event.objects.filter(result_out = True, group=group)
+    current_events = Event.objects.filter(result_out= False, group=group)
+    context ={
+        'group':group,
+        'past_events':past_events,
+        'current_events':current_events,
+    }
+    return render(request, 'group_view.html', context)
 
 def form_view(request, unique_id):
     
@@ -72,6 +93,7 @@ def event_home(request, pk):
    
 
     event = get_object_or_404(Event, pk=pk)
+    winner_positions = WinningPosition.objects.filter(event_of=event)
     event_form_parent = FormParent.objects.filter(event_obj = event)
     start_time = event.start_time.strftime("%Y-%m-%d %H:%M:%S")
     print(start_time)
@@ -85,6 +107,7 @@ def event_home(request, pk):
             
             
             'max_reached':True,
+            'winner_positions':winner_positions
         }
 
 
@@ -98,7 +121,8 @@ def event_home(request, pk):
             'event': event,
             'start_time':start_time,
             'event_form':event_form_parent,
-            'started':True
+            'started':True,
+            'winner_positions':winner_positions
         }
     elif event.start_time > datetime.now(timezone.utc):
         print('not started')
@@ -107,13 +131,15 @@ def event_home(request, pk):
             'start_time':start_time,
             'event_form':event_form_parent,
             'not_started':True,
+            'winner_positions':winner_positions
         }
     elif event.end_time < datetime.now(timezone.utc):
         print('ended') 
         context = {
             'event':event,
             'start_time':start_time,
-            'ended':True
+            'ended':True,
+            'winner_positions':winner_positions
         }
     return render(request, 'applicant_view/event_home.html', context)
 
@@ -538,6 +564,7 @@ def winner_declaration(request, unique_id):
         winning_position_obj.save()
         for i in profs:
             winning_position_obj.prof.add(get_object_or_404(Profile, pk =i))
+        return redirect("/winner_declaration/" + str(event.unique_id))
 
 
     context = {

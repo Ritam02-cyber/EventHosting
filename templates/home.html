@@ -118,7 +118,7 @@
     
     <div  class="d-flex justify-content-center">
         <div class="row">
-            <div class="col-lg-4 col-sm-12 px-5">
+            <div class="col-lg-4 col-sm-12 px-5 mt-2">
                 <div class="row">
 
                     <div class="d-flex justify-content-center">
@@ -132,7 +132,7 @@
                 </div>
 
             </div>
-            <div class="col-lg-4 col-sm-12 px-5">
+            <div class="col-lg-4 col-sm-12 px-5 mt-2">
                 <div class="row">
 
                     <div class="d-flex justify-content-center">
@@ -145,7 +145,7 @@
 
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-12 px-5">
+            <div class="col-lg-4 col-sm-12 px-5 mt-2">
                 <div class="row">
 
                     <div class="d-flex justify-content-center">
@@ -168,22 +168,35 @@
     <h1 class="text-center">Events</h1>
     <!-- events start -->
     <div class="row mt-5">
-        {% for event in events %}
+        {% for event in events|slice:":4" %}
 
         <div class="col-lg-4 col-sm-6 mt-3 px-4">
             <div id="card" class="card">
                 <div class="card-body">
-                    <h5 class="card-title heading mb-4">{{event.title}}</h5>
-                    <p>
+                    <h5 class="card-title heading ">{{event.title}}</h5>
+                    {% if event.group %}
+                     <p style="font-size:smaller" class="mb-3 mt-4"><img src="https://img.icons8.com/glyph-neue/24/ffffff/group-objects.png"/> Group: <a style="margin-left: 0.4rem;" href="{% url 'group_view' event.group.pk %}"> {{event.group}}</a></p>
+                    {% else %}
+                      <p style="font-size:smaller" class="mb-3 mt-4"><img src="https://img.icons8.com/glyph-neue/24/ffffff/group-objects.png"/> Group: <a style="margin-left: 0.4rem;" href=""> {{event.group}}</a></p>
+                      {% endif %}
+                    <p style="font-size:x-small">
                         {% for tag in event.tag_set.all %}
 
                         <a id="tag" href="">#{{tag}}</a>
                           
                         {% endfor %}
                     </p>
+                    <h6><span class="badge rounded-pill bg-light text-dark mt-2 mb-3">
+        
+                        {% if event.result_out %}
+                          Passed
+                        {% else %}
+                        Ongoing
+                        {% endif %}
+                        </span>
+                    </h6>
                     
-                    
-                    <a id="block-btn" href="{% url 'event_home' event.pk %}" class="btn btn-outline-primary">View <img style="margin-bottom: 0.1rem;" src="https://img.icons8.com/fluency/22/000000/forward.png"/></a>
+                    <a id="block-btn" href="{% url 'event_home' event.pk %}" class="btn btn-outline-primary btn-sm">View <img style="margin-bottom: 0.1rem;" src="https://img.icons8.com/fluency/18/000000/forward.png"/></a>
                 </div>
                 <center>
                     <hr style="width:80%">
@@ -194,7 +207,56 @@
 
         {% endfor %}
     </div>
+    <br><br>
+    <br>
+    <center><a id="block-btn" href="{% url 'all_events' %}" class="btn btn-primary">View more</a></center>
 
+</div>
+
+
+<br><br>
+<div class="container mt-3 mb-5">
+    <div class="row mb-5">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <img style="max-width:90vw" src="{% static 'group.svg' %}" alt="">
+        </div>
+        
+        <div class="col-lg-6 col-md-6 col-sm-12 px-5 py-5 mt-4 ">
+            <h3> Groups</h3>
+            <p style="color:grey">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum accusantium, error porro dolores suscipit quis!</p>
+        </div>
+    </div>
+    <br><br>
+
+    <h1 class="text-center mb-5">Groups</h1>
+    <br>
+    <div class="row ">
+        {% for group in groups %}
+          
+       
+        <div class="col-lg-4 col-sm-6">
+            <div class="card mb-3">
+                <div class="row g-0">
+                  <div class="col-md-5">
+                    <img style="height:100%; object-fit: cover" src="{{group.poster.url}}" class="img-fluid rounded-start" alt="...">
+                  </div>
+                  <div class="col-md-7">
+                    <div class="card-body">
+                      <h5 class="card-title">{{group.name}}</h5>
+                      <p style="opacity: 0.5;" class="card-text">{{group.description|truncatechars:50}}</p>
+                        <a class="btn btn-outline-info btn-sm" href="{% url 'group_view' group.pk %}">View</a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+        {% endfor %}
+    </div>
+
+    <br><br><br>
+    <center><a id="block-btn" href="{% url 'all_groups' %}" class="btn btn-primary">View more</a></center>
 </div>
 
 {% endblock container %}

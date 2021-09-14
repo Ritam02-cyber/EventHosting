@@ -10,6 +10,9 @@
       /* width: 80vw; */
 
   }
+  #no-anm:hover{
+    color: black !important;
+  }
 </style>
   
 {% endblock css %}
@@ -50,7 +53,89 @@
 
 
 
+  {% if event.result_out %}
 
+  <div class="container p-3">
+    <div class="alert alert-info" role="alert">
+        <h6 class="alert-heading">Results already declared, not accepting applications</h6>
+        <p id="localDate"></p>
+  
+        <div style="text-align:center; ; background-color:#03dac6; padding:1rem">
+  
+          <div class="container mt-4">
+            <div class="d-flex align-items-start">
+              <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          
+          
+                <button style="font-size: medium;" class="nav-link active"
+                  id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab" data-bs-toggle="pill"
+                  data-bs-target="#tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}" type="button" role="tab"
+                  aria-controls="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}"
+                  aria-selected="true">{{winner_positions.0.position_name}}</button>
+          
+          
+                {% for i in winner_positions|slice:"1:" %}
+          
+                <button style="font-size: medium;" class="nav-link" id="tab{{i.position_name}}{{i.pk}}-tab" data-bs-toggle="pill"
+                  data-bs-target="#tab{{i.position_name}}{{i.pk}}" type="button" role="tab"
+                  aria-controls="tab{{i.position_name}}{{i.pk}}" aria-selected="false">{{i.position_name}}</button>
+          
+                {% endfor %}
+          
+          
+              </div>
+              <div style="width: 100%;" class="tab-content" id="v-pills-tabContent">
+          
+                <div class="tab-pane fade show active" id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}"
+                  role="tabpanel" aria-labelledby="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab">
+          
+                  <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                      {{winner_positions.0.position_name}}
+                    </a>
+                    {% for k in winner_positions.0.prof.all %}
+          
+                    <a href="#" id="no-anm" class="list-group-item list-group-item-action">{{k}}</a>
+          
+                    {% endfor %}
+          
+          
+          
+                  </div>
+          
+                </div>
+          
+                {% for i in winner_positions|slice:"1:" %}
+                <div class="tab-pane fade" id="tab{{i.position_name}}{{i.pk}}" role="tabpanel"
+                  aria-labelledby="tab{{i.position_name}}{{i.pk}}-tab">
+          
+                  <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                      {{i.position_name}}
+                    </a>
+                    {% for k in i.prof.all %}
+          
+                    <a href="#" class="list-group-item list-group-item-action">{{k}}</a>
+          
+                    {% endfor %}
+          
+                  </div>
+          
+                </div>
+                {% endfor %}
+          
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
+        
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+  </div>
+    
+  {% else %}
 
   <div class="container p-3">
     <div class="alert alert-info" role="alert">
@@ -70,7 +155,7 @@
   </div>
 
   {% endif %}
-  
+  {% endif %}
 {% endif %}
 
 {% if ended %}
@@ -87,6 +172,7 @@
 
 {% if not_started %}
 
+
 <div class="container p-3">
     <div class="alert alert-info" role="alert">
         <h4 class="alert-heading">Event Not Started yet !!</h4>
@@ -102,8 +188,8 @@
         <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
     </div>
 </div>
-  
 {% endif %}
+
 
 
 
@@ -118,6 +204,10 @@
         <p id="description" class="card-text">{{event.description}}</p>
         <br>
         <p><img src="https://img.icons8.com/ios-glyphs/30/ffffff/gender-neutral-user.png"/>  {{event.host}}</p>
+        {% if event.group %}
+        <p style="font-size:smaller" class="mb-3 mt-4"><img src="https://img.icons8.com/glyph-neue/24/ffffff/group-objects.png"/> Group: <a style="margin-left: 0.4rem;" href="{% url 'group_view' event.group.pk %}"> {{event.group}}</a></p>
+        {% endif %}
+        
         <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>Max no of participants:  {{event.no_of_participants}}</p>
         <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>No of participants:  {{event.participants.all|length}}</p>
         <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> Start Time:  {{event.start_time|date:'Y-m-d H:i'}}</p>
@@ -131,7 +221,7 @@
         <p> <img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/ffffff/external-gamepad-appliances-kiranshastry-solid-kiranshastry.png"/>  Gaming Event </p>
           
         {% endif %}
-        <p>
+        <p style="font-size:smaller">
           {% for tag in event.tag_set.all %}
   
           <a id="tag" href="">#{{tag}}</a>

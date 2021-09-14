@@ -104,6 +104,19 @@
   <!-- end -->
 </head>
 <style>
+    *::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+    *::-webkit-scrollbar-track {
+        background-color: #e4e4e4;
+        border-radius: 90px;
+    }
+    
+    *::-webkit-scrollbar-thumb {
+        background-color: #03dac6;
+        border-radius: 100px;
+}
     body {
         background: #121212 !important;
         color: #ffff;
@@ -351,6 +364,8 @@
                             {% if request.user.is_authenticated %}
 
                             <li><a class="dropdown-item" href="{% url 'log_out' %}">Log out</a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile' request.user.username %}">Profile</a></li>
+
                             {% else %}
                             <li><a class="dropdown-item" href="{% url 'register_home' %}">Sign Up</a></li>
 

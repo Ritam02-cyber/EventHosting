@@ -1,5 +1,15 @@
 {% extends "dashboard-base.html" %}
 
+{% block css %}
+
+<style>
+  #no-anm:hover{
+    color: black !important;
+  }
+</style>
+  
+{% endblock css %}
+
 {% block container %}
 
 <div class="container mt-5">
@@ -25,7 +35,7 @@
 
     </div>
     <div class="d-grid gap-2">
-      <button class="btn btn-primary" type="submit">Declare</button>
+      <button class="btn btn-outline-secondary" type="submit">Declare</button>
 
     </div>
 
@@ -35,13 +45,14 @@
 
 </div>
 
-<hr>
+<br>
 
 {% if winner_positions %}
 
 <div class="container mt-4">
-  <div class="d-flex align-items-start">
-    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+  <div class="d-flex justify-content-start">
+
+    <div style="width: 20%;" class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
 
       <button style="font-size: medium;" class="nav-link active"
@@ -61,7 +72,7 @@
 
 
     </div>
-    <div style="width: 100%;" class="tab-content" id="v-pills-tabContent">
+    <div style="width: 80%;" class="tab-content" id="v-pills-tabContent">
 
       <div class="tab-pane fade show active" id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}"
         role="tabpanel" aria-labelledby="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab">
@@ -72,7 +83,7 @@
           </a>
           {% for k in winner_positions.0.prof.all %}
 
-          <a href="#" class="list-group-item list-group-item-action">{{k}}</a>
+          <a  href="#" id="no-anm" class="list-group-item list-group-item-action">{{k}}</a>
 
           {% endfor %}
 
@@ -92,7 +103,7 @@
           </a>
           {% for k in i.prof.all %}
 
-          <a href="#" class="list-group-item list-group-item-action">{{k}}</a>
+          <a  href="#" class="list-group-item list-group-item-action">{{k}}</a>
 
           {% endfor %}
 
@@ -104,7 +115,7 @@
     </div>
   </div>
 </div>
-<hr>
+<br>
 
 {% endif %}
 
@@ -116,7 +127,7 @@
 
   <h4 style="text-align:center"><img style="margin-bottom: 0.1rem; margin-right: 0.5rem;" src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/44/ffffff/external-mail-interface-kiranshastry-solid-kiranshastry.png"/><strong>Send Email </strong></h4>
 
-  <div style="border-radius: 6px;" class="container  px-5 py-2">
+  <div style="border-radius: 6px;" class="container  px-2 py-2">
     <form action="{% url 'send_mail_to_winners' event.unique_id %}" method="POST">{% csrf_token %}
       <div class="mb-3">
         <label for="positions" class="form-label">Positions</label>
@@ -145,7 +156,7 @@
             </textarea>
       </div>
       <div class="d-grid gap-2 col-6 mx-auto">
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-outline-primary" type="submit">Submit</button>
       </div>
 
     </form>
