@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" type="text/css">
     <title>event-homepage</title>
-    
+
 </head>
 
 <body>
@@ -19,20 +19,21 @@
             </div>
             <div class="nav">
                 <ul>
-                    <li> <a href="#">Home</a></li>
-                    <li> <a href="#">Events</a></li>
-                    <li> <a href="#">Blog</a></li>
+                    <li> <a href="#home">Home</a></li>
+                    <li> <a href="#events">Events</a></li>
+                    <li> <a href="#updates">updates</a></li>
 
                 </ul>
             </div>
 
             <div class="w3-sidebar" id="mySidebar">
-               <div class="contain"> <img src="logo(1).png" alt="nits logo" width="25%">&emsp;
-                <a href="#" class="closebtn" onclick="w3_close()">&times;</a></div>
-                <a href="#" class="w3-bar-item ">Home</a>
-                <a href="#" class="w3-bar-item ">Events</a>
-                <a href="#" class="w3-bar-item ">Blog</a>
-                
+                <div class="contain"> <img src="logo(1).png" alt="nits logo" width="25%">&emsp;
+                    <a href="#" class="closebtn" onclick="w3_close()">&times;</a>
+                </div>
+                <a href="#home" class="w3-bar-item ">Home</a>
+                <a href="#events" class="w3-bar-item ">Events</a>
+                <a href="#updates" class="w3-bar-item ">Updates</a>
+
             </div>
 
             <!-- Page Content -->
@@ -48,6 +49,7 @@
 
     </header>
     <main>
+        <a name="home">
         <section class="bg-primary">
             <div class="intro">
                 Explore and participate<br>
@@ -59,94 +61,135 @@
             <div class="flex"> <input type="button" value="Get Started">&emsp;&emsp;&emsp;
                 <button>Search Events</button>
             </div>
-            <div class="justify_center"><img src="images/Group1.png" alt="" ></div>
+            <div class="justify_center"><img src="images/Group1.png" alt=""></div>
         </section>
+        <a name="events">
         <section>
             <div class="flex font_size">
                 Various Events
             </div>
             <div class="flex1">
                 <div class="card">
-                   <div class="item"> <img src="images/face1.jpg" alt="" width="250px">
-                   </div>
+                    <div class="item"><img src="images/face1.jpg" alt="" width="250px">
+                    </div>
                     <div class="card_items">
                         <h4>Clubs Activities</h4>
                         <button>Explore</button>
-                        
+
                     </div>
                     <hr color="red" style="margin:0.5rem" size="5px" width="80%">
                 </div>
                 <div class="card">
-                    <div class="item"> <img src="images/face2.jpg" alt="" width=250px></div>
+                    <div class="item"> <img src="images/face2.jpg" alt="" width=250px>
+                    </div>
                     <div class="card_items">
                         <h4>Cultural Activities</h4>
                         <button>Explore</button>
-                        
                     </div>
                     <hr color="blue" style="margin:0.5rem" size="5px" width="80%">
                 </div>
                 <div class="card">
-                    <div class="item"> <img src="images/face3.jpg" alt="" width=250px></div>
+                    <div class="item"> <img src="images/face3.jpg" alt="" width=250px>
+                    </div>
                     <div class="card_items">
                         <h4>Environmental Activities</h4>
                         <button>Explore</button>
-                       
                     </div>
                     <hr color="yellow" style="margin:0.5rem" size="5px" width="80%">
                 </div>
                 <div class="card">
-                    <div class="item"> <img src="images/face8.jpg" alt="" width=250px> </div>
+                    <div class="item"> <img src="images/face1.jpg" alt="" width=250px>
+                    </div>
                     <div class="card_items">
-                        <h4>Sport and Games</h4>
+                        <h4>Sport and Games Activities</h4>
                         <button>Explore</button>
-                      
                     </div>
                     <hr color="green" style="margin:0.5rem" size="5px" width=80%>
                 </div>
-              
-            </div>
-            
-      
+             </div>
+
+
         </section>
+        <a name="updates">
         <section>
             <div class="flex3">
                 <h2 style="padding-bottom: 1rem;">Upcoming Events</h2>
                 <div class="filter">
-                   <h4>Category filter:</h4> &emsp;
-                   <select  id="events">
-                    <option value="All events">All events</option>
-                    <option value="Club events">Club events</option>
-                    <option value="Society events">Society events</option>
-                    <option value="Other events">Other events</option>
-                    
-                </select></div>
+                    <h4>Category filter:</h4> &emsp;
+                    <select id="events">
+                        <option value="All events">All events</option>
+                        <option value="Club events">Club events</option>
+                        <option value="Society events">Society events</option>
+                        <option value="Other events">Other events</option>
+
+                    </select>
+                </div>
             </div>
             <div class="flex4">
                 <div class="card2">
-                   <div class="item"> <img src="images/face1.jpg" alt="" width="200px">
-                   </div>
-                   
+                    <div class="item"> <img src="images/face1.jpg" alt="" width="200px">
+                    </div>
+                    <button>View Event</button>
                 </div>
                 <div class="card2">
                     <div class="item"> <img src="images/face2.jpg" alt="" width=200px></div>
-                  
+                    <button>View Event</button>
                 </div>
                 <div class="card2">
                     <div class="item"> <img src="images/face3.jpg" alt="" width=200px></div>
+                    <button>View Event</button>
+                </div>
+                <div class="card2">
+                    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    <button>View Event</button>
+                </div>
+                <div class="card2">
+                    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    <button>View Event</button>
+                </div>
+                <div class="card2">
+                    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    <button>View Event</button>
+                </div>
                 
-                </div>
-                <div class="card2">
-                    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
-                   
-                </div>
-                <div class="card2">
-                    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
-                    
+            </div>
+
+        </section>
+        <section>
+            <div class="updates">
+                <div class="label"><h2>Events Updates</h2></div>
+                <div class="updates_items">
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, aliquid.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, repudiandae!</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, reprehenderit.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, laudantium.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. At, doloribus?</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe, sapiente?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, odit.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, blanditiis.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+                        <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, suscipit.</li>
+
+                    </ul>
                 </div>
             </div>
-           
         </section>
     </main>
+    <footer>
+        Events Hoster &copy; All Right Reserved
+    </footer>
     <script type="text/javascript" src="util.js"></script>
 </body>
 
