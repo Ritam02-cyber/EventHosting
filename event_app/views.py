@@ -83,6 +83,7 @@ def group_view(request, pk):
     }
     return render(request, 'group_view.html', context)
 
+@login_required(login_url='/register_home')
 def form_view(request, unique_id):
     
     form_parent_obj = get_object_or_404(FormParent, unique_id=unique_id)
@@ -159,7 +160,7 @@ def event_home(request, pk):
 
 
 
-
+@login_required(login_url='/register_home')
 def form_submit(request, unique_id):
     form_parent_obj = get_object_or_404(FormParent, unique_id=unique_id)
     form_designs = FormDesign.objects.filter(form_parent=form_parent_obj)
@@ -252,6 +253,8 @@ def form_submit(request, unique_id):
         }
         return render(request, 'applicant_view/form_submit_error.html',context)
 
+
+@login_required(login_url='/register_home')
 def add_group(request):
     if request.method == 'POST':
         name = request.POST.get('name', '')
@@ -268,7 +271,7 @@ def add_group(request):
 
 
 
-
+@login_required(login_url='/register_home')
 def add_event(request):
     events = Event.objects.all()
     groups = EventGroup.objects.all()
@@ -383,6 +386,7 @@ def add_event(request):
     return render(request, "add_event.html", context)
 
 
+@login_required(login_url='/register_home')
 def add_form_parent(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if request.method == 'POST':
@@ -391,7 +395,9 @@ def add_form_parent(request, pk):
         description = request.POST.get('description', '')
         banner = request.FILES.get('banner')
         # print(banner)
-        event = get_object_or_404(Event, pk=pk)
+        # event = get_object_or_404(Event, pk=pk)
+        if event.host != request.user.profile:
+            raise Http404()
         if banner is not None:
             form_parent_obj = FormParent(title=title, description=description,  banner_img = banner, event_obj = event)
         else:
@@ -406,6 +412,7 @@ def add_form_parent(request, pk):
 
 
 # @login_required(login_url='/login_page')
+@login_required(login_url='/register_home')
 def add_form_fields(request, pk):
     form_parent_obj =get_object_or_404(FormParent,id=pk)
     form_designs = FormDesign.objects.filter(form_parent=form_parent_obj)
@@ -413,6 +420,8 @@ def add_form_fields(request, pk):
     if request.method == 'POST':
         label_name = request.POST.get('label_name', '')
         field_type = request.POST.get('field_type', '')
+        if form_parent_obj.event.host != request.user.profile:
+            raise Http404()
         
         # print(label_name)
         # print(field_type)
@@ -477,6 +486,7 @@ def add_form_fields(request, pk):
 
 
 # @login_required(login_url='/login_page')
+@login_required(login_url='/register_home')
 def delete_form_field(request, pk):
     form_field = get_object_or_404(FormDesign, pk=pk)
     form_parent = form_field.form_parent
@@ -486,6 +496,9 @@ def delete_form_field(request, pk):
         form_field.delete()
 
     return redirect('/add_form_fields/' + str(form_parent.pk))
+
+
+@login_required(login_url='/register_home')
 def event_view_host(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if request.user == event.host.user:
@@ -562,10 +575,12 @@ def accept_responses_toggle(request, pk):
 #     }
 
 #     return render(request,'all_events_view_host.html', context)
-
+@login_required(login_url='/register_home')
 def winner_declaration(request, unique_id):
     event = get_object_or_404(Event, unique_id=unique_id)
     winner_positions = WinningPosition.objects.filter(event_of=event)
+    if event.host != request.user.profile:
+        raise Http404()
     if len(winner_positions) != 0:
         event.result_out =  True
         event.save()
@@ -587,7 +602,7 @@ def winner_declaration(request, unique_id):
         }
     return render(request,'winner_declaration.html', context)
 
-
+@login_required(login_url='/register_home')
 def send_mail_to_winners(request, unique_id):
     event = get_object_or_404(Event, unique_id=unique_id)
     winning_positions = WinningPosition.objects.filter(event_of=event) 
@@ -595,6 +610,8 @@ def send_mail_to_winners(request, unique_id):
         positions = request.POST.getlist('positions', [])
         subject = request.POST.get('subject', '')
         message = request.POST.get('message', '')
+        if event.host != request.user.profile:
+            raise Http404()
         print(positions, subject, message)
         email_list =[]
         for i in positions:
@@ -627,7 +644,7 @@ def send_mail_to_winners(request, unique_id):
         # email_locator.send()
     context = {'event': event}
     return redirect('/winner_declaration/' + str(unique_id))
-
+@login_required(login_url='/register_home')
 def send_mail_to_participants(request,unique_id):
     event = get_object_or_404(Event, unique_id=unique_id)
 
@@ -635,6 +652,8 @@ def send_mail_to_participants(request,unique_id):
         participants = request.POST.getlist('participants', [])
         subject = request.POST.get('subject', '')
         message = request.POST.get('message', '')
+        if event.host != request.user.profile:
+            raise Http404()
         print(participants)
         c = {'sub':subject,'message':message }
         text_content = render_to_string('email_templates/email.txt', c)
@@ -706,7 +725,7 @@ def leaderboard(request):
         'data': data,
     }
     return render(request, 'applicant_view/leaderboard.html', context)
-
+@login_required(login_url='/register_home')
 def profile(request, username):
     user_obj = get_object_or_404(User, username=username)
     events = Event.objects.filter(participants = user_obj.profile)
@@ -715,6 +734,7 @@ def profile(request, username):
         'events':events,
     }
     return render(request, 'applicant_view/profile.html',context)
+@login_required(login_url='/register_home')
 def events_list_host(request):
     events = Event.objects.filter(host= request.user.profile).order_by('-created_time')
     context = {
@@ -722,7 +742,7 @@ def events_list_host(request):
     }
 
     return render(request, 'events_list_host.html', context)
-
+@login_required(login_url='/register_home')
 def contact_host(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if request.method == 'POST':
@@ -740,6 +760,7 @@ def contact_host(request, pk):
         email.send()
 
         return redirect('/event_home/' + str(event.pk))
+@login_required(login_url='/register_home')
 def profile_edit(request):
     if request.method == 'POST':
         name = request.POST.get('name', '')
@@ -795,7 +816,8 @@ def sub_to_nl(request):
             nl_obj.save()
 
     return redirect('/')
-
+    
+@login_required(login_url='/register_home')
 def delete_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if request.user.profile == event.host:
