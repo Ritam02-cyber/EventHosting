@@ -136,6 +136,10 @@
 </div>
   
 
+
+{% if request.user == user_obj %}
+  
+
 <!-- modal start -->
 
 <!-- Button trigger modal -->
@@ -149,15 +153,43 @@
           <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          ...
+        <div class="modal-body py-3 px-5">
+            <form id="profile-edit" method="POST" enctype="multipart/form-data" action="{% url 'profile_edit' %}">{% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input id="name" name="name" type="text" value="{{request.user.first_name}}" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label for="dp" class="form-label">Profile picture</label>
+                    <input id="dp" name="dp" type="file" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input id="email" name="email" type="email" value="{{request.user.email}}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input id="phone" name="phone" type="number" value="{{request.user.profile.phone}}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input id="address" name="address" type="text" value="{{request.user.profile.address}}" class="form-control">
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="submit" form="profile-edit" class="btn btn-outline-info">Save changes</button>
         </div>
       </div>
     </div>
   </div>
+
+
+
 <!-- modal end -->
+{% endif %}
+
 {% endblock container %}

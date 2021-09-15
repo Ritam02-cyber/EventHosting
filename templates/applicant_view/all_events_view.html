@@ -3,11 +3,18 @@
 
 {% block container %}
 <div class="container mt-4">
+  <form method="POST" action="{% url 'all_events' %}">{% csrf_token %}
   <div class="d-flex justify-content-center mt-5">
-    <input style="width:60%; max-width:700px" type="text" class="form-control" placeholder="Search Events">
-    <button class="btn btn-outline-info">Search</button>
+    <input style="width:60%; max-width:700px" type="text" name="search_text" class="form-control" placeholder="Search Events">
+    <button type="submit" class="btn btn-outline-info">Search</button>
 
+    
   </div>
+  </form>
+  {% if search_text %}
+    <h5 class="text-center mt-5 mb-5">Search results for '{{search_text}}'</h5>
+      
+    {% endif %}
 
   <div class="d-flex justify-content-center mt-5 mb-3">
     <a href="#past-events" class="btn btn-outline-info">Past events</a>
@@ -45,7 +52,7 @@
           <p style="font-size: x-small;">
             {% for tag in event.tag_set.all %}
 
-            <a id="tag" href="">#{{tag}}</a>
+            <a id="tag" href="{% url 'tagged_events' tag.pk %}">#{{tag}}</a>
 
             {% endfor %}
           </p>

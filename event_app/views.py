@@ -48,14 +48,28 @@ def home(request):
 
 
 def all_events(request):
-    current_events = Event.objects.filter(result_out =False).order_by('-created_time')
-    past_events = Event.objects.filter(result_out= True).order_by('-created_time')
-    context = {'current_events':current_events, 'past_events':past_events}
+    if request.method == 'POST':
+        search_text = request.POST.get('search_text', '')
+        current_events = Event.objects.filter(result_out =False, title__icontains=search_text).order_by('-created_time')
+        past_events = Event.objects.filter(result_out= True, title__icontains=search_text).order_by('-created_time')
+        context = {'current_events':current_events, 'past_events':past_events, 'search_text':search_text}
+
+    else:
+        current_events = Event.objects.filter(result_out =False).order_by('-created_time')
+        past_events = Event.objects.filter(result_out= True).order_by('-created_time')
+        context = {'current_events':current_events, 'past_events':past_events}
     return render(request, 'applicant_view/all_events_view.html', context)
 
 def all_groups(request):
-    groups = EventGroup.objects.all()
-    context = {'groups':groups}
+    if request.method == 'POST':
+        search_text = request.POST.get('search_text', '')
+        group1 = EventGroup.objects.filter(name__icontains =search_text)
+        group2 = EventGroup.objects.filter( description__icontains=search_text)
+        groups = group1.union(group2)
+        context = {'groups':groups,'search_text':search_text}
+    else:   
+        groups = EventGroup.objects.all()
+        context = {'groups':groups}
     return render(request, 'applicant_view/all_groups_view.html', context)
 
 def group_view(request, pk):
@@ -726,6 +740,61 @@ def contact_host(request, pk):
         email.send()
 
         return redirect('/event_home/' + str(event.pk))
+def profile_edit(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        phone = request.POST.get('phone', '')
+        address = request.POST.get('address', '')
+        dp = request.FILES.get('dp', '')
+        if dp != '':
+            user_obj = request.user
+            user_obj.first_name = name
+            user_obj.email = email
+            user_obj.save()
+            user_obj.profile.address = address
+            user_obj.profile.phone = phone
+            user_obj.profile.dp = dp
+            user_obj.profile.save()
+        elif dp == '':
+            user_obj = request.user
+            user_obj.first_name = name
+            user_obj.email = email
+            user_obj.save()
+            user_obj.profile.address = address
+            user_obj.profile.phone = phone
+            user_obj.profile.save()
+        return redirect("/profile/" + str(request.user.username))
+    else:
+        return redirect("/profile/" + str(request.user.username))
+
+            
+def tagged_events(request, pk):
+    tag = get_object_or_404(Tag, pk=pk)
+    events = tag.event.all()
+    context ={
+        'events': events,
+        'tag':tag
+    }
+    return render(request,'tagged_events.html', context)
+
+
+
+
+
+def sub_to_nl(request):
+    if request.method == 'POST':
+        email = request.POST.get('email', '')
+        nl = NewsLetter.objects.filter(email=email)
+        print(nl)
+        if len(nl) == 0:
+            
+            nl_obj = NewsLetter(
+                email=email,
+            )
+            nl_obj.save()
+
+    return redirect('/')
 
 def delete_event(request, pk):
     event = get_object_or_404(Event, pk=pk)

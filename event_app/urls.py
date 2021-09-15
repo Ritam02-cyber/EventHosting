@@ -28,5 +28,8 @@ urlpatterns =[
     path('group_view/<int:pk>', views.group_view, name="group_view"),
     path('all_events', views.all_events, name='all_events'),
     path('all_groups', views.all_groups, name='all_groups'),
+    path('profile_edit', views.profile_edit,name='profile_edit'),
+    path('tagged_events/<int:pk>', views.tagged_events, name="tagged_events"),
+    path('sub_to_nl', views.sub_to_nl, name='sub_to_nl'),
     path('log_out', views.log_out, name='log_out')
 ]

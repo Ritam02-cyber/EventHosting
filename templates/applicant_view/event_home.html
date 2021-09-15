@@ -224,7 +224,7 @@
         <p style="font-size:smaller">
           {% for tag in event.tag_set.all %}
   
-          <a id="tag" href="">#{{tag}}</a>
+          <a id="tag" href="{% url 'tagged_events' tag.pk %}">#{{tag}}</a>
             
           {% endfor %}
         </p>

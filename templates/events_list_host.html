@@ -34,6 +34,7 @@
                                 {% if event.formparent %}
                                 <li><a style="color: grey" class="dropdown-item" href="{% url 'responses' event.formparent.pk %}">Responses</a></li>
                                 <li><a style="color: grey" class="dropdown-item" href="{% url 'winner_declaration' event.unique_id %}">Winner Declare</a></li>
+                                <li><a style="color: grey" class="dropdown-item" href="{% url 'send_mail_to_participants' event.unique_id %}">Send mail</a></li>
                                 <li><a style="color: grey" class="dropdown-item" href="{% url 'add_form_fields' event.formparent.pk %}">Form</a></li>
                                   
                                 {% endif %}

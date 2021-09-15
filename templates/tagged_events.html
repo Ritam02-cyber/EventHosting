@@ -1,0 +1,57 @@
+
+{% extends "base2.html" %}
+
+{% block container %}
+
+<div class="container mt-5 p-3">
+    <h3 class="text-primary text-center ml-3">#{{tag.name}}</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-5">
+        {% for event in events %}
+    
+        <div class="col">
+          <div class="card">
+            <img style="max-width:100%; object-fit:cover" src="{{event.poster.url}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title mb-3">{{event.title}}</h5>
+    
+              {% if event.group %}
+              <p style="font-size:smaller" class="mb-3 mt-4"><img
+                  src="https://img.icons8.com/glyph-neue/24/ffffff/group-objects.png" /> Group: <a
+                  style="margin-left: 0.4rem;" href="{% url 'group_view' event.group.pk %}"> {{event.group}}</a></p>
+              {% else %}
+              <p style="font-size:smaller" class="mb-3 mt-4"><img
+                  src="https://img.icons8.com/glyph-neue/24/ffffff/group-objects.png" /> Group: <a
+                  style="margin-left: 0.4rem;" href=""> {{event.group}}</a></p>
+              {% endif %}
+    
+    
+              <p style="font-size: x-small;">
+                {% for tag in event.tag_set.all %}
+    
+                <a id="tag" href="{% url 'tagged_events' tag.pk %}">#{{tag}}</a>
+    
+                {% endfor %}
+              </p>
+              <h6><span class="badge rounded-pill bg-light text-dark mt-2 mb-4">
+    
+                  {% if event.result_out %}
+                  Passed
+                  {% else %}
+                  Ongoing
+                  {% endif %}
+                </span>
+              </h6>
+              <a id="block-btn" href="{% url 'event_home' event.pk %}" class="btn btn-outline-primary btn-sm">View <img
+                  style="margin-bottom: 0.1rem;" src="https://img.icons8.com/fluency/18/000000/forward.png" /></a>
+    
+            </div>
+          </div>
+        </div>
+    
+        {% endfor %}
+    
+      </div>
+      <br><br>
+</div>
+  
+{% endblock container %}

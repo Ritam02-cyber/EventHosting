@@ -182,7 +182,7 @@
                     <p style="font-size:x-small">
                         {% for tag in event.tag_set.all %}
 
-                        <a id="tag" href="">#{{tag}}</a>
+                        <a id="tag" href="{% url 'tagged_events' tag.pk %}">#{{tag}}</a>
                           
                         {% endfor %}
                     </p>
@@ -259,4 +259,23 @@
     <center><a id="block-btn" href="{% url 'all_groups' %}" class="btn btn-primary">View more</a></center>
 </div>
 
+
+
+
+<section style="background-color: #1f1b24;" class="footer pb-5 pt-3">
+    <h3 class="text-center mt-5 ">Subscribe To NewsLetter</h3>
+    <div class="container mt-2 p-3">
+        <form method="POST" action="{% url 'sub_to_nl' %}">{% csrf_token %}
+        <div class="d-flex justify-content-center mt-5">
+            
+                
+                <input style="width:40%; max-width:400px" type="email" name="email" class="form-control" placeholder="Email">
+                <button type="submit" style="margin-left: 0.3rem;" class="btn btn-outline-secondary">Subscribe <img style="margin-bottom: 0.1rem; margin-left: 0.1rem" src="https://img.icons8.com/external-kiranshastry-gradient-kiranshastry/22/000000/external-paper-plane-interface-kiranshastry-gradient-kiranshastry.png"/></button>
+           
+            
+        
+        </div>
+        </form>
+    </div>
+</section>
 {% endblock container %}
