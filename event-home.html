@@ -20,8 +20,8 @@
             <div class="nav">
                 <ul>
                     <li> <a href="#home">Home</a></li>
-                    <li> <a href="#events">Events</a></li>
-                    <li> <a href="#updates">updates</a></li>
+                    <li> <a href="#event">Events</a></li>
+                    <li> <a href="#updates">Updates</a></li>
 
                 </ul>
             </div>
@@ -31,7 +31,7 @@
                     <a href="#" class="closebtn" onclick="w3_close()">&times;</a>
                 </div>
                 <a href="#home" class="w3-bar-item ">Home</a>
-                <a href="#events" class="w3-bar-item ">Events</a>
+                <a href="#event" class="w3-bar-item ">Events</a>
                 <a href="#updates" class="w3-bar-item ">Updates</a>
 
             </div>
@@ -49,8 +49,8 @@
 
     </header>
     <main>
-        <a name="home">
-        <section class="bg-primary">
+    
+        <section class="bg-primary" id="home">
             <div class="intro">
                 Explore and participate<br>
                 to know yourself
@@ -59,12 +59,12 @@
                 We serve you a common platform to know the details and participate in ongoing and upcomming events.
             </div>
             <div class="flex"> <input type="button" value="Get Started">&emsp;&emsp;&emsp;
-                <button>Search Events</button>
+                  <button> Search Events</button>
             </div>
             <div class="justify_center"><img src="images/Group1.png" alt=""></div>
         </section>
-        <a name="events">
-        <section>
+       
+        <section id="event">
             <div class="flex font_size">
                 Various Events
             </div>
@@ -110,52 +110,116 @@
 
 
         </section>
-        <a name="updates">
+      
         <section>
             <div class="flex3">
                 <h2 style="padding-bottom: 1rem;">Upcoming Events</h2>
                 <div class="filter">
                     <h4>Category filter:</h4> &emsp;
-                    <select id="events">
-                        <option value="All events">All events</option>
-                        <option value="Club events">Club events</option>
-                        <option value="Society events">Society events</option>
-                        <option value="Other events">Other events</option>
+                    <select id="events" onchange="changeList()">
+                        <option value="All_events">All events</option>
+                        <option value="Club_events">Club events</option>
+                        <option value="Society_events">Society events</option>
+                        <option value="Other_events">Other events</option>
 
                     </select>
                 </div>
             </div>
-            <div class="flex4">
+            <div class="flex4" id="All_events">
                 <div class="card2">
-                    <div class="item"> <img src="images/face1.jpg" alt="" width="200px">
+                 <a href="#">    <div class="item"> <img src="images/face1.jpg" alt="" width="200px">
                     </div>
-                    <button>View Event</button>
-                </div>
+                    View Event
+                </div></a>
                 <div class="card2">
-                    <div class="item"> <img src="images/face2.jpg" alt="" width=200px></div>
-                    <button>View Event</button>
-                </div>
+                 <a href="#">    <div class="item"> <img src="images/face2.jpg" alt="" width=200px></div>
+                    View Event
+                </div></a>
                 <div class="card2">
-                    <div class="item"> <img src="images/face3.jpg" alt="" width=200px></div>
-                    <button>View Event</button>
-                </div>
+                 <a href="#">    <div class="item"> <img src="images/face3.jpg" alt="" width=200px></div>
+                    View Event
+                </div></a>
                 <div class="card2">
-                    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
-                    <button>View Event</button>
-                </div>
+                 <a href="#">    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    View Event
+                </div></a>
                 <div class="card2">
-                    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
-                    <button>View Event</button>
-                </div>
+                 <a href="#">    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    View Event
+                </div></a>
                 <div class="card2">
-                    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
-                    <button>View Event</button>
-                </div>
+                 <a href="#">    <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    View Event
+                </div></a>
                 
             </div>
+            <div class="flex4" id="Club_events" style="display: none;">
+                <div class="card2">
+                    <a href="#">    <div class="item"> <img src="images/face1.jpg" alt="" width="200px">
+                    </div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#">    <div class="item"> <img src="images/face2.jpg" alt="" width=200px></div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#">   <div class="item"> <img src="images/face3.jpg" alt="" width=200px></div>
+                    View Event
+                </div></a>
+             </div>
+                
+            </div>
+            <div class="flex4" id="society"style="display: none;">
+                <div class="card2">
+                    <a href="#"> <div class="item"> <img src="images/face1.jpg" alt="" width="200px">
+                    </div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#">  <div class="item"> <img src="images/face2.jpg" alt="" width=200px></div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#">  <div class="item"> <img src="images/face3.jpg" alt="" width=200px></div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#">  <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    View Event
+                </div></a>
+               
+                
+            </div>
+            <div class="flex4" id="other" style="display: none;">
+                <div class="card2">
+                    <a href="#"><div class="item"> <img src="images/face1.jpg" alt="" width="200px">
+                    </div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#"><div class="item"> <img src="images/face2.jpg" alt="" width=200px></div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#"> <div class="item"> <img src="images/face3.jpg" alt="" width=200px></div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#"> <div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    View Event
+                </div></a>
+                <div class="card2">
+                    <a href="#"><div class="item"> <img src="images/face8.jpg" alt="" width=200px> </div>
+                    View Event
+                </div></a>
+               
+                
+            </div>
+          
 
         </section>
-        <section>
+        <section id="updates">
             <div class="updates">
                 <div class="label"><h2>Events Updates</h2></div>
                 <div class="updates_items">
