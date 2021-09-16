@@ -420,7 +420,7 @@ def add_form_fields(request, pk):
     if request.method == 'POST':
         label_name = request.POST.get('label_name', '')
         field_type = request.POST.get('field_type', '')
-        if form_parent_obj.event.host != request.user.profile:
+        if form_parent_obj.event_obj.host != request.user.profile:
             raise Http404()
         
         # print(label_name)
@@ -687,6 +687,7 @@ def register_home(request):
             user_obj = User.objects.create_user(first_name = name, password = password, email = email, username=username)
 
             user_obj.save()
+            login(request, user_obj)
             # prf =Profile(prof_user= user_obj)
             # prf.save()
             prof = get_object_or_404(Profile, user = user_obj)
@@ -768,7 +769,7 @@ def profile_edit(request):
         phone = request.POST.get('phone', '')
         address = request.POST.get('address', '')
         dp = request.FILES.get('dp', '')
-        if dp != '':
+        if dp != '' and phone !='':
             user_obj = request.user
             user_obj.first_name = name
             user_obj.email = email
@@ -777,13 +778,31 @@ def profile_edit(request):
             user_obj.profile.phone = phone
             user_obj.profile.dp = dp
             user_obj.profile.save()
-        elif dp == '':
+        elif dp =='' and phone !='':
             user_obj = request.user
             user_obj.first_name = name
             user_obj.email = email
             user_obj.save()
             user_obj.profile.address = address
             user_obj.profile.phone = phone
+            
+            user_obj.profile.save()
+        elif dp !='' and phone =='':
+            user_obj = request.user
+            user_obj.first_name = name
+            user_obj.email = email
+            user_obj.save()
+            user_obj.profile.address = address
+      
+            user_obj.profile.dp = dp
+            user_obj.profile.save()
+        elif dp == '' and phone == '':
+            user_obj = request.user
+            user_obj.first_name = name
+            user_obj.email = email
+            user_obj.save()
+            user_obj.profile.address = address
+           
             user_obj.profile.save()
         return redirect("/profile/" + str(request.user.username))
     else:
@@ -814,9 +833,20 @@ def sub_to_nl(request):
                 email=email,
             )
             nl_obj.save()
+            subject = "Thanks for subscribing !!"
+            c = {'sub':subject}
+            print("thanks")
+            text_content = render_to_string('email_templates/thank.txt', c)
+            html_content = render_to_string('email_templates/thank.html', c)
+
+            email_obj = EmailMultiAlternatives(subject, text_content)
+            email_obj.attach_alternative(html_content, "text/html")
+            email_obj.to = [email]
+            
+            email_obj.send()
 
     return redirect('/')
-    
+
 @login_required(login_url='/register_home')
 def delete_event(request, pk):
     event = get_object_or_404(Event, pk=pk)

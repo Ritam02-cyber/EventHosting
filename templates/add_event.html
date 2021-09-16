@@ -111,7 +111,7 @@
 
                 <div class="mt-5">
                     <label for="tags" class="form-label">Tags</label>
-                    <input type="text" class="form-control" id="tags" name="tags" aria-describedby="tagHelp" required/>
+                    <input type="text" class="form-control" value="EVENTS" id="tags" name="tags" aria-describedby="tagHelp" required />
                     <div id="tagHelp" class="form-text">separate multiple tags with comma and lower case letters are suggested</div>
                 </div>
 
@@ -128,8 +128,9 @@
                             <form style="max-width: 90%;" disabled>
                                 
                                 <br>
-                                <select name="group" class="form-control select2">
-                                    <option>Group</option>
+                                
+                                <select id="group" name="group" class="form-control select2">
+                                    
                                     {% for i in groups %}
                                     <option value="{{i.pk}}">{{i.name}}</option> 
                                     {% endfor %}
