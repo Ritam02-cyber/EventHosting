@@ -298,7 +298,7 @@ def add_event(request):
        
         prof = Profile.objects.filter(user = request.user)[0]
   
-        if poster != '' and group != '':
+        if poster != '' and group != 'no':
             event = Event(
                 title = name,
                 description = description,
@@ -313,7 +313,7 @@ def add_event(request):
                 group=EventGroup.objects.filter(pk = group)[0]
            
                 )
-        elif poster == '' and group =='':
+        elif poster == '' and group =='no':
             event = Event(
                 title = name,
                 description = description,
@@ -327,7 +327,7 @@ def add_event(request):
                 end_time=end_time, 
                
                 )
-        elif poster !='' and group =='':
+        elif poster !='' and group =='no':
             event = Event(
                 title = name,
                 description = description,
@@ -342,7 +342,7 @@ def add_event(request):
                 poster = poster,
                
                 )
-        elif poster == '' and group != '':
+        elif poster == '' and group != 'no':
             event = Event(
                 title = name,
                 description = description,
@@ -687,14 +687,16 @@ def register_home(request):
             user_obj = User.objects.create_user(first_name = name, password = password, email = email, username=username)
 
             user_obj.save()
-            login(request, user_obj)
+            
             # prf =Profile(prof_user= user_obj)
             # prf.save()
             prof = get_object_or_404(Profile, user = user_obj)
             prof.type_of = type_of_account
             prof.save()
+            login(request, user_obj)
 
             messages.success(request, "Account Created Successfully!!")
+            return redirect("/")
     
     return render(request, 'register_home.html')
 
@@ -844,8 +846,9 @@ def sub_to_nl(request):
             email_obj.to = [email]
             
             email_obj.send()
+            messages.success(request, "Thank you for subscribing !!")
 
-    return redirect('/')
+    return redirect('/#footer-div')
 
 @login_required(login_url='/register_home')
 def delete_event(request, pk):

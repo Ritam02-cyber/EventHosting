@@ -9,8 +9,16 @@
 
     }
 </style>
-  
+
 {% endblock css %}
+{% block navlinks %}
+<a class="nav-link active px-3 py-4 " aria-current="page" href="/">Home</a>
+<a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_events' %}">Events</a>
+<a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_groups' %}">Groups</a>
+<a class="nav-link active px-3 py-4 " href="{% url 'add_event' %}">Add Events</a>
+<a class="nav-link active px-3 py-4 " href="{% url 'events_list_host' %}">Hosted Events</a>
+<a class="nav-link active  px-3 py-4 " href="{% url 'leaderboard' %}" >Leaderboard</a>
+{% endblock navlinks %}
 
 {% block container %}
 
@@ -20,8 +28,8 @@
             <div class="card p-3">
                 <div class="d-flex justify-content-center">
 
-                    <img style="width: 10rem;" src="{{request.user.profile.dp.url}}" alt="" class="rounded-circle">
-                    
+                    <img style="width: 10rem;" src="{{user_obj.profile.dp.url}}" alt="" class="rounded-circle">
+
                 </div>
 
                 <div class="d-flex justify-content-center">
@@ -32,10 +40,10 @@
                 <div class="d-flex justify-content-center mt-2">
                     <h5 style="opacity: 0.5; font-size: 1.5rem;">{{user_obj.first_name}}</h5>
                 </div>
-                
 
 
-                
+
+
             </div>
         </div>
 
@@ -51,7 +59,7 @@
 
                     </a>
                     {% endif %}
-                    
+
                 </div>
 
                 <ul class="list-group list-group-flush mt-3 px-3">
@@ -80,7 +88,7 @@
                             <h6 style="opacity:0.6; font-size:1rem; margin-left:2rem">{{user_obj.profile.address}}</h6>
                         </div>
                     </li>
-                    
+
                 </ul>
             </div>
         </div>
@@ -89,12 +97,12 @@
         <div class="card p-3">
             <div class="d-flex justify-content-between text-primary">
                 <h5 class="mb-3">Events participated</h5>
-               
+
             </div>
             <div class="container mt-3">
                 <div class="row">
 
-               
+
 
                     {% for event in events %}
                     <div class="col-lg-3 col-sm-6 mb-3">
@@ -104,7 +112,7 @@
                                 <div class="card-body">
                                   <h6 class="card-title">{{event.title}}</h6>
                                   <h6><span class="badge rounded-pill bg-light text-dark mt-2">
-        
+
                                     {% if event.result_out %}
                                       Passed
                                     {% else %}
@@ -115,42 +123,42 @@
                                 </div>
                                 <div class="card-footer">
                                   <small class="text-muted">{{event.start_time.date}}</small>
-                                 
-    
+
+
                                 </div>
                             </div>
 
                         </a>
-                        
+
 
                     </div>
-                    
+
                     {% endfor %}
 
 
                 </div>
-                    
+
             </div>
         </div>
     </div>
 </div>
-  
+
 
 
 {% if request.user == user_obj %}
-  
+
 
 <!-- modal start -->
 
 <!-- Button trigger modal -->
 
-  
+
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Edit profile</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body py-3 px-5">
@@ -171,7 +179,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone</label>
-                    <input id="phone" name="phone" type="number" value="{{request.user.profile.phone}}" class="form-control">
+                    <input id="phone" name="phone" type="number" value="{{request.user.profile.phone}}" class="form-control" min="0">
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">Address</label>

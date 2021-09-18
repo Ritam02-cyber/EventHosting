@@ -16,10 +16,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+
     <!-- google fonts end -->
 
     <!-- icons -->
-      
+
+    <script src="https://kit.fontawesome.com/a214cb37a0.js" crossorigin="anonymous"></script>
 
   
 
@@ -28,6 +30,7 @@
 
 
 <style>
+    
 
 *::-webkit-scrollbar {
     width: 10px;
@@ -42,6 +45,9 @@
         background-color: #03dac6;
         border-radius: 100px;
 }
+html{
+        scroll-behavior: smooth;
+    }
     body {
         background: #292929 !important;
         color: #ffff;
@@ -78,7 +84,8 @@
         min-width:300px;
     }
     #hero-btn{
-        width: 8rem;
+        width: 7rem;
+        font-size:0.95rem
     }
     #card:hover{
         box-shadow: 8px 4px 54px -15px rgba(64,64,64,0.79);
@@ -184,6 +191,15 @@
 #icons{
     width: 5rem;
 }
+.home-card{
+    box-shadow: 2px -5px 20px 4px rgba(235,237,240,0.15);
+-webkit-box-shadow: 2px -5px 20px 4px rgba(235,237,240,0.15);
+-moz-box-shadow: 2px -5px 20px 4px rgba(235,237,240,0.15);
+}
+.active-link{
+    color: #03dac5 !important
+
+}
 </style>
 
 {% block css %}
@@ -203,12 +219,9 @@
             
             <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                 <div class="navbar-nav ">
-                    <a class="nav-link active px-3 py-4 " aria-current="page" href="/">Home</a>
-                    <a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_events' %}">Events</a>
-                    <a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_groups' %}">Groups</a>
-                    <a class="nav-link active px-3 py-4 " href="{% url 'add_event' %}">Add Events</a>
-                    <a class="nav-link active px-3 py-4 " href="{% url 'events_list_host' %}">Hosted Events</a>
-                    <a class="nav-link active  px-3 py-4 " href="{% url 'leaderboard' %}" >Leaderboard</a>
+                    {% block navlinks %}
+                      
+                    {% endblock navlinks %}
                 </div>
             </div>
 
@@ -242,7 +255,155 @@
     {% endblock container %}
 
 
+    <!-- footer master -->
+    <div id="footer-div">
 
+    </div>
+
+<section style="background-color: #1f1b24;" class="footer pb-5 pt-3">
+    
+    <h3 class="text-center mt-5 ">Subscribe To NewsLetter</h3>
+    <div class="container mt-2 p-3">
+        <form method="POST" action="{% url 'sub_to_nl' %}">{% csrf_token %}
+            <div class="d-flex justify-content-center mt-5">
+
+
+                <input style="width:40%; max-width:400px" type="email" name="email" class="form-control"
+                    placeholder="Email" required>
+                <button type="submit" style="margin-left: 0.3rem;" class="btn btn-outline-secondary">Subscribe <img
+                        style="margin-bottom: 0.1rem; margin-left: 0.1rem"
+                        src="https://img.icons8.com/external-kiranshastry-gradient-kiranshastry/22/000000/external-paper-plane-interface-kiranshastry-gradient-kiranshastry.png" /></button>
+
+
+
+            </div>
+        </form>
+    </div>
+
+    {% for msg in messages %}
+
+    <div class="alert alert-primary mx-5" role="alert">
+        {{msg}}
+    </div>
+      
+    {% endfor %}
+
+
+    <!-- Footer -->
+    <footer style="height:100%" class="text-center text-lg-start  text-muted">
+        <!-- Section: Social media -->
+        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+            <!-- Left -->
+            <div class="me-5 d-none d-lg-block">
+                <span>Get connected with us on social networks:</span>
+            </div>
+            <!-- Left -->
+
+            <!-- Right -->
+            <div>
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+           
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <!-- Right -->
+        </section>
+        <!-- Section: Social media -->
+
+        <!-- Section: Links  -->
+        <section class="">
+            <div class="container text-center text-md-start mt-5">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <!-- Content -->
+                        <h6 class="fw-bold mb-4">
+                            <i class="fas fa-gem me-2"></i>From  <a style="text-decoration: none" href=""> GrowerLabs</a>
+                        </h6>
+                        <p>
+                            Here you can use rows and columns to organize your footer content. Lorem ipsum
+                            dolor sit amet, consectetur adipisicing elit.
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Utilities
+                        </h6>
+                        <p>
+                            <a href="{% url 'register_home' %}" class="text-reset">Sign up</a>
+                        </p>
+                        <p>
+                            <a href="/" class="text-reset">Home</a>
+                        </p>
+                       
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Useful links
+                        </h6>
+                        <p>
+                            <a href="{% url 'all_events' %}" class="text-reset">Events</a>
+                        </p>
+                        <p>
+                            <a href="{% url 'add_event' %}" class="text-reset">Add events</a>
+                        </p>
+                        <p>
+                            <a href="{% url 'all_groups' %}" class="text-reset">Groups</a>
+                        </p>
+                        <p>
+                            <a href="{% url 'leaderboard' %}" class="text-reset">Leaderboard</a>
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Contact
+                        </h6>
+                        <p><i class="fas fa-home me-3"></i> Silchar, Assam, India</p>
+                        <p>
+                            <i class="fas fa-envelope me-3"></i>
+                            growerlabs@gmail.com
+                        </p>
+                        <p><i class="fas fa-phone me-3"></i> + 91 9365456645</p>
+                        <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
+        <!-- Section: Links  -->
+
+        <!-- Copyright -->
+        <div class="text-center px-4 pt-4 pb-4 " style="background-color: rgba(0, 0, 0, 0.05);margin-bottom: -2rem;">
+            © 2021 Copyright:
+            <a class="text-reset fw-bold" href="">GrowerLabs</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+</section>
 
 
 

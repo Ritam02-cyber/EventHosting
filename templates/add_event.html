@@ -76,7 +76,7 @@
                 <br>
                 <div>
                     <label for="exampleFormControlInput1" class="form-label">No of Participants</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" name="no_of_participants" required/>
+                    <input type="number" class="form-control" id="exampleFormControlInput1" name="no_of_participants"  min="0" required/>
                 </div>
 
                 <br><br>
@@ -96,15 +96,31 @@
                     <div class="col-lg-6 col-sm-12 mt-2">
                         <label for="startTime" class="col-sm-3 col-form-label mt-2">Start Time</label>
     
-                        <input style="color: #121212 !important; padding:0.3rem" type="datetime-local" id="startTime" required />
+                        <input style="color: #121212 !important; padding:0.3rem" type="time" id="startTime" required />
                         <input style="display: none" class="form-control" type="datetime" id="start_time"
                             name="start_time" />
                     </div>
                     <div class="col-lg-6 col-sm-12 mt-2">
+                        <label for="endTime" class="col-sm-3 col-form-label mt-2">Start date</label>
+    
+                        <input style="color: #121212 !important; padding:0.3rem" type="date" id="startDate" required />
+                        
+                    </div>
+
+                </div>
+                 <div class="row">
+                    
+                    <div class="col-lg-6 col-sm-12 mt-2">
                         <label for="endTime" class="col-sm-3 col-form-label mt-2">End Time</label>
     
-                        <input style="color: #121212 !important; padding:0.3rem" type="datetime-local" id="endTime" required />
+                        <input style="color: #121212 !important; padding:0.3rem" type="time" id="endTime" required />
                         <input style="display: none" class="form-control" type="datetime" id="end_time" name="end_time" />
+                    </div>
+                    <div class="col-lg-6 col-sm-12 mt-2">
+                        <label for="startTime" class="col-sm-3 col-form-label mt-2">End date</label>
+    
+                        <input style="color: #121212 !important; padding:0.3rem" type="date" id="endDate" required />
+                       
                     </div>
 
                 </div>
@@ -130,7 +146,7 @@
                                 <br>
                                 
                                 <select id="group" name="group" class="form-control select2">
-                                    
+                                    <option selected value="no">None</option> 
                                     {% for i in groups %}
                                     <option value="{{i.pk}}">{{i.name}}</option> 
                                     {% endfor %}
@@ -150,7 +166,8 @@
                 <br><br>  
             </form>
             <div class="d-grid gap-2">
-                <button id="sub-btn" form="add_event" class="btn btn-outline-primary" type="submit">Submit</button>
+                <button style="display: none;" id="sub-btn" form="add_event" class="btn btn-outline-primary" type="submit">Submit</button>
+                <button id="sub-btn-click"  class="btn btn-outline-primary" type="button">Add</button>
 
             </div>
         </div>
@@ -203,31 +220,80 @@
 
 <script>
     document.getElementById("startTime").addEventListener("change", () => {
-        var inpt_date = document.getElementById("startTime").value;
-        var d = new Date(inpt_date).toISOString();
+        var inpt_time = document.getElementById("startTime").value;
+        var inpt_date = document.getElementById("startDate").value;
+        console.log(inpt_time);
+        console.log(inpt_date);
+        var date = inpt_date + " " + inpt_time;
+        console.log(date);
+        var d = new Date(date).toISOString();
 
         document.getElementById("start_time").value = d;
 
         console.log(d);
-        if (document.getElementById("start_time").value = document.getElementById("start_time").value) {
+        if (document.getElementById("start_time").value >= document.getElementById("end_time").value) {
             alert("End Time Must Be After Start Time")
         }
     });
+    document.getElementById("startDate").addEventListener("change", () => {
+        var inpt_time = document.getElementById("startTime").value;
+        var inpt_date = document.getElementById("startDate").value;
+        console.log(inpt_time);
+        console.log(inpt_date);
+        var date = inpt_date + " " + inpt_time;
+        console.log(date);
+        var d = new Date(date).toISOString();
+
+        document.getElementById("start_time").value = d;
+
+        console.log(d);
+       
+    });
+    
+
+
+
+
+    
 
     document.getElementById("endTime").addEventListener("change", () => {
-        var inpt_date = document.getElementById("endTime").value;
-        var e = new Date(inpt_date).toISOString();
+        var inpt_time = document.getElementById("endTime").value;
+        var inpt_date = document.getElementById("endDate").value;
+        console.log(inpt_time);
+        console.log(inpt_date);
+        var date = inpt_date + " " + inpt_time;
+        console.log(date);
+        var d = new Date(date).toISOString();
 
-        document.getElementById("end_time").value = e;
+        document.getElementById("end_time").value = d;
 
-        // console.log(d);
-        if (e <= document.getElementById("start_time").value) {
-            alert("End Time Must Be After Start Time");
-            document.getElementById("sub-btn").type = 'button';
-        }else{
-            document.getElementById("sub-btn").type = 'submit';
-        }
+        console.log(d);
+       
     });
+    document.getElementById("endDate").addEventListener("change", () => {
+        var inpt_time = document.getElementById("endTime").value;
+        var inpt_date = document.getElementById("endDate").value;
+        console.log(inpt_time);
+        console.log(inpt_date);
+        var date = inpt_date + " " + inpt_time;
+        console.log(date);
+        var d = new Date(date).toISOString();
+
+        document.getElementById("end_time").value = d;
+
+        console.log(d);
+       
+    });
+    document.getElementById("sub-btn-click").addEventListener("click",()=>{
+        if (document.getElementById("start_time").value >= document.getElementById("end_time").value) {
+            alert("End Time Must Be After Start Time")
+        }else if(document.getElementById("start_time").value < document.getElementById("end_time").value){
+            console.log("sub");
+            document.getElementById("sub-btn").click();
+
+        }
+
+    })
 
 
 

@@ -16,7 +16,14 @@
 </style>
   
 {% endblock css %}
-
+{% block navlinks %}
+<a class="nav-link active px-3 py-4 " aria-current="page" href="/">Home</a>
+<a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_events' %}">Events</a>
+<a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_groups' %}">Groups</a>
+<a class="nav-link active px-3 py-4 " href="{% url 'add_event' %}">Add Events</a>
+<a class="nav-link active px-3 py-4 " href="{% url 'events_list_host' %}">Hosted Events</a>
+<a class="nav-link active  px-3 py-4 " href="{% url 'leaderboard' %}" >Leaderboard</a>
+{% endblock navlinks %}
 {% block container %}
 
 
@@ -28,10 +35,17 @@
 <input style="display: none;" type="text" name="" id="startTime" value="{{start_time}}" >
 
 
+{% if event_form %}
+<input style="display: none;" id="form_exist" type="text" value="true">
 
+{% else %}
+<input style="display: none;" id="form_exist" type="text" value="false">
+  
+{% endif %}
 
 {% if event_form %}
 <input style="display: none;" id="unique_id" type="text" value="{{event_form.0.unique_id}}">
+
   
 {% endif %}
 
@@ -336,15 +350,19 @@
     
 // Funcion to convert UTC date-time
 // to Local date-time
-
+    startTime = startTime.replace(/-/g,'/');
     var theDate = new Date(Date.parse(startTime + ' UTC'));
   
     // document.write("Local date Time: ", 
     //         theDate.toLocaleString());
+    console.log(theDate);
     localDate = theDate.toLocaleString();
     document.getElementById('localDate').innerHTML =localDate;
-
+    
+  console.log("3");
     console.log(theDate.toLocaleString());
+    console.log(localDate);
+    
 
 
 
@@ -354,9 +372,12 @@
     
     
 
-    
+    localDate = localDate.replace(/,/g,'')
+    localDate = localDate.toUpperCase() 
+    console.log(localDate);
 // Set the date we're counting down to
-var countDownDate = new Date(localDate).getTime()
+var countDownDate = new Date(theDate).getTime()
+console.log(countDownDate);
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -380,8 +401,12 @@ var x = setInterval(function() {
   // If the count down is over, write some text 
   if (distance < 0) {
     clearInterval(x);
-    if(unique_id){
+    console.log("1");
+    if(document.getElementById("form_exist").value == "true") {
       document.getElementById("demo").innerHTML = "<a class='btn btn-outline-primary' href = '/form_view/" + unique_id.value+ "'>Form Link</a>";
+      console.log("2");
+    }else if(document.getElementById("form_exist").value == "false"){
+      document.getElementById("demo").innerHTML = "<a class='btn btn-outline-primary' href = '" + "/"+ "'>Home</a>";
     }
     
   }
