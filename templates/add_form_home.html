@@ -1,0 +1,74 @@
+{% extends "dashboard-base.html" %}
+{% load static %}
+
+{% block container %}
+
+<div class="container mt-5 ">
+  <div class="d-flex justify-content-center">
+    <div style="width:70%; min-width:300px" class="card">
+      <div class="card-body">
+        <h5 class="card-title"> {{event.title}}</h5>
+        {% comment %}
+          
+        <p id="description" class="card-text">
+          {{event.description}}
+        </p>
+        {% endcomment %}
+        <p class="card-text"><small class="text-muted">{{event.created_time}}</small></p>
+      </div>
+      <img style="width:100%; height:300px; object-fit: cover;" src="{{event.poster.url}}" class="card-img-bottom" alt="...">
+    </div>
+
+  </div>
+ 
+
+</div>
+
+<div class="container mt-5">
+
+  {% if event.formparent %}
+
+  <div class="d-grid gap-2">
+    <a class="btn btn-primary" type="button" href="{% url 'add_form_fields' event.formparent.pk %}">Edit Form</a>
+   
+  </div>
+    
+  {% else %}
+  <div style="border-radius: 8px;" class="card border-primary mb-3 box-shadow">
+    
+   
+    <div class="card-body text-primary">
+      <h3 style=" font-size: 900;" class="card-title mb-5 text-primary mt-3">Form Details</h3>
+    
+      
+      <form class="py-2 px-3" enctype="multipart/form-data" method="POST" action="{% url 'add_form_parent' event.pk %}"> {% csrf_token %}
+
+        <div class="mb-3 mt-2">
+          <label for="form_field" class="form-label">Form Title</label>
+          <input type="text" class="form-control" id = "form_field" name="title" required>
+        </div>
+        <div class="mb-3 mt-2">
+          <label for="form_field" class="form-label">Form Description</label>
+          <textarea class="form-control" name="description" id="form_field" rows="3" required></textarea>
+        </div>
+        <br>
+        <div class=" mt-2">
+          <label for="formFile" class="form-label">Upload form banner</label>
+          <input class="form-control" type="file" id="formFile" name="banner">
+        </div>
+        <br>
+        <div class="d-grid gap-2  mt-4">
+          <button style="border-radius: 2px;" type="submit" class="btn btn-primary">Proceed</button>
+
+        </div>
+       
+    
+      </form>
+      
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock container %}

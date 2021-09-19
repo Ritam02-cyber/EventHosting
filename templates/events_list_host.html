@@ -1,0 +1,62 @@
+{% extends "dashboard-base.html" %}
+{% load static %}
+
+{% block container %}
+<div class="container mt-4">
+    <div class="row">
+        {% for event in events %}
+        <div class="col-lg-4 col-sm-6 mb-3">
+            <a style="text-decoration: none; " href="{% url 'event_view_host' event.pk %}">
+                <div style=" margin-right: 1rem;" class="card" >
+                    <img style="height:200px; object-fit:cover" src="{{event.poster.url}}" class="card-img-top"
+                        alt="...">
+                    <div class="card-body">
+                        <h6 class="card-title">{{event.title}}</h6>
+                        <h6><span class="badge rounded-pill bg-light text-dark mt-2">
+
+                                {% if event.result_out %}
+                                Passed
+                                {% else %}
+                                Ongoing
+                                {% endif %}
+                            </span>
+                        </h6>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">{{event.start_time.date}}</small>
+                            <a style="text-decoration:none; " href="#" type="button" data-bs-toggle="dropdown" ><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg></a>
+
+                            <ul style="background-color: #121212;" class="dropdown-menu">
+                                <li><a style="color: grey" class="dropdown-item" href="{% url 'delete_event' event.pk %}">Delete</a></li>
+                                {% if event.formparent %}
+                                <li><a style="color: grey" class="dropdown-item" href="{% url 'responses' event.formparent.pk %}">Responses</a></li>
+                                <li><a style="color: grey" class="dropdown-item" href="{% url 'winner_declaration' event.unique_id %}">Winner Declare</a></li>
+                                <li><a style="color: grey" class="dropdown-item" href="{% url 'send_mail_to_participants' event.unique_id %}">Send mail</a></li>
+                                <li><a style="color: grey" class="dropdown-item" href="{% url 'add_form_fields' event.formparent.pk %}">Form</a></li>
+                                  
+                                {% endif %}
+                                
+                                
+                                
+                            </ul>
+
+                        </div>
+                        
+
+
+                    </div>
+                </div>
+
+            </a>
+
+
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock container %}

@@ -1,0 +1,420 @@
+{% extends "base2.html" %}
+
+{% load static %}
+{% block css %}
+<style>
+  .modal-dialog{
+      /* width: 1000px; */
+      /* min-width: 80vw; */
+      max-width: 800px ;
+      /* width: 80vw; */
+
+  }
+  #no-anm:hover{
+    color: black !important;
+  }
+</style>
+  
+{% endblock css %}
+{% block navlinks %}
+<a class="nav-link active px-3 py-4 " aria-current="page" href="/">Home</a>
+<a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_events' %}">Events</a>
+<a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_groups' %}">Groups</a>
+<a class="nav-link active px-3 py-4 " href="{% url 'add_event' %}">Add Events</a>
+<a class="nav-link active px-3 py-4 " href="{% url 'events_list_host' %}">Hosted Events</a>
+<a class="nav-link active  px-3 py-4 " href="{% url 'leaderboard' %}" >Leaderboard</a>
+{% endblock navlinks %}
+{% block container %}
+
+
+<!-- {{event.unique_id}} -->
+
+
+<!-- input to get the start time -->
+
+<input style="display: none;" type="text" name="" id="startTime" value="{{start_time}}" >
+
+
+{% if event_form %}
+<input style="display: none;" id="form_exist" type="text" value="true">
+
+{% else %}
+<input style="display: none;" id="form_exist" type="text" value="false">
+  
+{% endif %}
+
+{% if event_form %}
+<input style="display: none;" id="unique_id" type="text" value="{{event_form.0.unique_id}}">
+
+  
+{% endif %}
+
+
+{% if started %}
+  {% if max_reached  %}
+
+  <div class="container p-3">
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Sorry Max no of participants reached!</h4>
+        <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+  </div>
+    
+
+  {% elif event_form %}
+
+
+
+  {% if event.result_out %}
+
+  <div class="container p-3">
+    <div class="alert alert-info" role="alert">
+        <h6 class="alert-heading">Results already declared, not accepting applications</h6>
+        <p id="localDate"></p>
+  
+        <div style="text-align:center; ; background-color:#03dac6; padding:1rem">
+  
+          <div class="container mt-4">
+            <div class="d-flex align-items-start">
+              <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          
+          
+                <button style="font-size: medium;" class="nav-link active"
+                  id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab" data-bs-toggle="pill"
+                  data-bs-target="#tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}" type="button" role="tab"
+                  aria-controls="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}"
+                  aria-selected="true">{{winner_positions.0.position_name}}</button>
+          
+          
+                {% for i in winner_positions|slice:"1:" %}
+          
+                <button style="font-size: medium;" class="nav-link" id="tab{{i.position_name}}{{i.pk}}-tab" data-bs-toggle="pill"
+                  data-bs-target="#tab{{i.position_name}}{{i.pk}}" type="button" role="tab"
+                  aria-controls="tab{{i.position_name}}{{i.pk}}" aria-selected="false">{{i.position_name}}</button>
+          
+                {% endfor %}
+          
+          
+              </div>
+              <div style="width: 100%;" class="tab-content" id="v-pills-tabContent">
+          
+                <div class="tab-pane fade show active" id="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}"
+                  role="tabpanel" aria-labelledby="tab{{winner_positions.0.position_name}}{{winner_positions.0.pk}}-tab">
+          
+                  <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                      {{winner_positions.0.position_name}}
+                    </a>
+                    {% for k in winner_positions.0.prof.all %}
+          
+                    <a href="#" id="no-anm" class="list-group-item list-group-item-action">{{k}}</a>
+          
+                    {% endfor %}
+          
+          
+          
+                  </div>
+          
+                </div>
+          
+                {% for i in winner_positions|slice:"1:" %}
+                <div class="tab-pane fade" id="tab{{i.position_name}}{{i.pk}}" role="tabpanel"
+                  aria-labelledby="tab{{i.position_name}}{{i.pk}}-tab">
+          
+                  <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                      {{i.position_name}}
+                    </a>
+                    {% for k in i.prof.all %}
+          
+                    <a href="#" class="list-group-item list-group-item-action">{{k}}</a>
+          
+                    {% endfor %}
+          
+                  </div>
+          
+                </div>
+                {% endfor %}
+          
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
+        
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+  </div>
+    
+  {% else %}
+
+  <div class="container p-3">
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Event Started  !!</h4>
+
+
+        <div style="text-align:center; font-size:2.5rem; background-color:#03dac6; padding:1rem">
+
+          <img style="border-radius: 4px;height:5rem; margin-bottom:1rem" src="{% static 'form-svg.gif'%}"/>
+          <br>
+          <a class="btn btn-primary" href="{% url 'form_view' event_form.0.unique_id %}">Form Link Here</a>
+        </div>
+        
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+  </div>
+
+  {% endif %}
+  {% endif %}
+{% endif %}
+
+{% if ended %}
+<div class="container p-3">
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Sorry Event Ended !</h4>
+        <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+</div>
+  
+{% endif %}
+
+{% if not_started %}
+
+
+<div class="container p-3">
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Event Not Started yet !!</h4>
+        <p id="localDate"></p>
+
+        <div style="text-align:center; font-size:2.5rem; background-color:#03dac6; padding:1rem">
+
+          <img style="border-radius: 4px; margin-bottom:1rem" src="{% static 'hourglass.gif'%}"/>
+          <p  id="demo"></p>
+        </div>
+        
+        <hr>
+        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    </div>
+</div>
+{% endif %}
+
+
+
+
+
+<div class="container mt-3 p-3">
+
+  <div class="d-flex justify-content-center">
+    <div style="border-radius: 20px;" class="card mb-3" id="big-card">
+      <img style=" max-height: 70vh; object-fit: cover; " src="{{event.poster.url}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h3 class="card-title">{{event.title}}</h3>
+        <p id="description" class="card-text mt-4 mb-4">{{event.description}}</p>
+        <br>
+        <p><img src="https://img.icons8.com/ios-glyphs/30/ffffff/gender-neutral-user.png"/>  {{event.host}}</p>
+        {% if event.group %}
+        <p style="font-size:smaller" class="mb-3 mt-4"><img src="https://img.icons8.com/glyph-neue/24/ffffff/group-objects.png"/> Group: <a style="margin-left: 0.4rem;" href="{% url 'group_view' event.group.pk %}"> {{event.group}}</a></p>
+        {% endif %}
+        
+        <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>Max no of participants:  {{event.no_of_participants}}</p>
+        <p><img style="margin-bottom: 0.2rem; margin-right: 0.4rem;" src="https://img.icons8.com/windows/32/ffffff/conference-foreground-selected.png"/>No of participants:  {{event.participants.all|length}}</p>
+        <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> Start Time:  {{event.start_time|date:'Y-m-d H:i'}}</p>
+        <p class="text-muted"><img style="margin-bottom:0.2rem; margin-right:0.4rem" src="https://img.icons8.com/ios/30/ffffff/overtime.png"/> End Time:  {{event.end_time|date:'Y-m-d H:i'}}</p>
+        {% if event.type_of == 'NR' %}
+  
+        <p> <img src="https://img.icons8.com/windows/32/ffffff/baby-calendar.png"/>  Normal Event</p>
+  
+        {% elif event.type_of == 'GM' %}
+  
+        <p> <img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/ffffff/external-gamepad-appliances-kiranshastry-solid-kiranshastry.png"/>  Gaming Event </p>
+          
+        {% endif %}
+        <p style="font-size:smaller">
+          {% for tag in event.tag_set.all %}
+  
+          <a id="tag" href="{% url 'tagged_events' tag.pk %}">#{{tag}}</a>
+            
+          {% endfor %}
+        </p>
+  
+        <h4><span class="badge rounded-pill bg-light text-dark mt-2">
+          
+        {% if event.result_out %}
+          Passed
+        {% else %}
+        Ongoing
+        {% endif %}
+        </span></h4>
+        
+      </div>
+    </div>
+
+  </div>
+  
+
+</div>
+
+
+<center><!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#contactModal" id="block-btn">
+    <img style="margin-right: 0.2rem;" src="https://img.icons8.com/ios/24/000000/outgoing-call.png"/> Contact Host
+  </button>
+</center>
+
+<div class="container p-4">
+
+
+  <div class="card border-primary mb-3">
+   
+    <div class="card-body text-light">
+      <h3 class="card-title mb-3">Rules</h3>
+      <p class="card-text">{{event.rules}}</p>
+ 
+    </div>
+  </div>
+
+
+</div>
+
+<!-- modal start -->
+
+<!-- Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="contactModalLabel">Contact Host</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ">
+        <div class="card">
+         
+          <div class="card-body">
+            <a style="text-decoration: none; " href=""><img style="margin-bottom: 0.1rem; margin-right: 0.5rem" src="https://img.icons8.com/ios-glyphs/20/ffffff/user-male-circle.png"/> {{event.host}}</a>
+            <p style="margin-top: 1rem;"><img style="margin-bottom: 0.1rem; margin-right: 0.5rem" src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/24/ffffff/external-email-cv-resume-flatart-icons-outline-flatarticons.png"/>
+               {{event.host.user.email}}</p>
+
+            <p style="margin-top: 1rem;"><img style="margin-bottom: 0.1rem; margin-right: 0.5rem" src="https://img.icons8.com/material-outlined/24/ffffff/phone.png"/>{{event.host.phone}}</p>
+
+
+          </div>
+
+        </div>
+        <div class="container p-4 mt-3">
+          <div class="d-flex justify-content-center">
+            <h4> <img style="margin-bottom: 0.1rem; margin-right: 0.5rem" src="https://img.icons8.com/external-flatart-icons-outline-flatarticons/34/ffffff/external-email-cv-resume-flatart-icons-outline-flatarticons.png"/> Send mail</h4>
+          </div>
+          <form action="{% url 'contact_host'  event.pk %}" method="POST">{% csrf_token %}
+
+            <div class="mb-3 mt-3">
+              <label for="subject" class="form-label">Subject</label>
+              <input type="text" class="form-control" id="subject" name="subject"  required>
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea class="form-control" id="message" rows="4" name='message' required>
+              </textarea>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+              <button id="block-btn" class="btn btn-primary" type="submit">Submit</button>
+            </div>
+
+          </form>
+         
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- modal end -->
+
+
+  
+{% endblock container %}
+
+
+
+{% block js %}
+
+<script>
+    startTime = document.getElementById('startTime').value;
+    unique_id = document.getElementById('unique_id');
+    console.log(startTime);
+    
+// Funcion to convert UTC date-time
+// to Local date-time
+    startTime = startTime.replace(/-/g,'/');
+    var theDate = new Date(Date.parse(startTime + ' UTC'));
+  
+    // document.write("Local date Time: ", 
+    //         theDate.toLocaleString());
+    console.log(theDate);
+    localDate = theDate.toLocaleString();
+    document.getElementById('localDate').innerHTML =localDate;
+    
+  console.log("3");
+    console.log(theDate.toLocaleString());
+    console.log(localDate);
+    
+
+
+
+
+
+    // countdown timer
+    
+    
+
+    localDate = localDate.replace(/,/g,'')
+    localDate = localDate.toUpperCase() 
+    console.log(localDate);
+// Set the date we're counting down to
+var countDownDate = new Date(theDate).getTime()
+console.log(countDownDate);
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    console.log("1");
+    if(document.getElementById("form_exist").value == "true") {
+      document.getElementById("demo").innerHTML = "<a class='btn btn-outline-primary' href = '/form_view/" + unique_id.value+ "'>Form Link</a>";
+      console.log("2");
+    }else if(document.getElementById("form_exist").value == "false"){
+      document.getElementById("demo").innerHTML = "<a class='btn btn-outline-primary' href = '" + "/"+ "'>Home</a>";
+    }
+    
+  }
+}, 1000);
+
+
+</script>
+  <!-- fontawesome -->
+  <script src="https://use.fontawesome.com/a5af6d7eaf.js"></script>
+  <!-- end -->
+{% endblock js %}

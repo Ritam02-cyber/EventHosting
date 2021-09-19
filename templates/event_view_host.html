@@ -1,0 +1,80 @@
+{% extends "dashboard-base.html" %}
+
+{% block container %}
+<!-- {{event.unique_id}} -->
+<div class="container mt-5">
+
+    <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{event.poster.url}}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{event.title}}</h5>
+              <p id="description" class="card-text mt-4 mb-4">{{event.description}}</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+    <br>
+    {% if event.formparent %}
+
+  <div class="d-grid gap-2">
+    <a class="btn btn-primary" type="button" href="{% url 'add_form_fields' event.formparent.pk %}">Edit Form</a>
+   
+  </div>
+    
+  {% else %}
+  <div style="border-radius: 8px;" class="card border-primary mb-3 box-shadow">
+    <div class="card-header text-primary mt-2">
+      <h5>Enter The Form Details</h5>
+    </div>
+    <div class="card-body text-primary">
+    
+      
+      <form class="py-2 px-3" enctype="multipart/form-data" method="POST" action="{% url 'add_form_parent' event.pk %}"> {% csrf_token %}
+
+        <div class="mb-3 mt-2">
+          <label for="form_field" class="form-label">Form Title</label>
+          <input type="text" class="form-control" id = "form_field" name="title" required>
+        </div>
+        <div class="mb-3 mt-2">
+          <label for="form_field" class="form-label">Form Description</label>
+          <textarea class="form-control" name="description" id="form_field" rows="3" required></textarea>
+        </div>
+        <br>
+        <div class=" mt-2">
+          <label for="formFile" class="form-label">Upload form banner</label>
+          <input class="form-control" type="file" id="formFile" name="banner">
+        </div>
+        <br>
+        <div class="d-grid gap-2  mt-4">
+          <button style="border-radius: 2px;" type="submit" class="btn btn-primary">Proceed</button>
+
+        </div>
+       
+    
+      </form>
+      
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+{% if event.formparent %}
+<div class="container mt-3">
+ <div class="d-flex justify-content-center">
+   <a href="{% url 'responses' event.formparent.pk %}" class="btn btn-outline-info">Responses</a>
+   <a href="{% url 'send_mail_to_participants' event.unique_id %}" class="btn btn-outline-info">Send Mail</a>
+   <a href="{% url 'winner_declaration' event.unique_id %}" class="btn btn-outline-info">Winner Declaration</a>
+   <!-- <a href="" class="btn btn-outline-info"></a> -->
+ </div>
+
+</div>
+{% endif %}
+{% endblock container %}

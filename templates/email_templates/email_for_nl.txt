@@ -1,0 +1,2 @@
+Hi there. Just saw this event on EventDesk and wanted to make sure you didn't miss it. Are you planning to attend? Are there other friends&nbsp; that may be attending? Just share, participate and win.
+http://127.0.0.1:8000/event_home/{{pk}}

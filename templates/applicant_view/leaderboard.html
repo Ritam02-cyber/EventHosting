@@ -1,0 +1,49 @@
+{% extends "base2.html" %}
+{% load static %}
+
+{% block navlinks %}
+<a class="nav-link active px-3 py-4" aria-current="page" href="/">Home</a>
+<a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_events' %}">Events</a>
+<a class="nav-link active px-3 py-4 " aria-current="page" href="{% url 'all_groups' %}">Groups</a>
+<a class="nav-link active px-3 py-4 " href="{% url 'add_event' %}">Add Events</a>
+<a class="nav-link active px-3 py-4 " href="{% url 'events_list_host' %}">Hosted Events</a>
+<a class="nav-link active  px-3 py-4  active-link" href="{% url 'leaderboard' %}" >Leaderboard</a>
+{% endblock navlinks %}
+
+
+{% block container %}
+
+
+<div class="container mt-4 p-4">
+
+
+    <div class="d-flex justify-content-center">
+        <img style="height:40vh" id="hero-illustration" src="{% static 'illus2.svg' %}" alt="">
+    </div>
+    <div style="text-align: center; " class="d-flex justify-content-center">
+        <h1 class="mt-5 head-title">
+            🏆 Leaderboard
+        </h1>
+    </div>
+    <br>
+    <br>
+
+    <ol class="list-group list-group-numbered ">
+
+        {% for i, j in data.items %}
+
+        <li style="border-color:grey ;" class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold "><a href="{% url 'profile' i %}">{{i}}</a></div>
+              <!-- Cras justo odio -->
+            </div>
+            <span class="badge bg-primary rounded-pill">{{j}}</span>
+        </li>
+          
+        {% endfor %}
+        
+        
+    </ol>
+</div>
+  
+{% endblock container %}
