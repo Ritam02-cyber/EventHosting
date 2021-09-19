@@ -22,6 +22,7 @@ from django.template.loader import render_to_string
 
 
 
+
 # Create your views here.
 def convert_time(time):
     time = time[:-5]
@@ -40,24 +41,27 @@ def home(request):
             event_list.append(event)
 
     groups = EventGroup.objects.all()
+    current_time = datetime.now(timezone.utc)
     context ={
         'events':event_list,
         'groups':groups,
+        'current_time':current_time,
     }
     return render(request, 'home.html', context)
 
 
 def all_events(request):
+    current_time = datetime.now(timezone.utc)
     if request.method == 'POST':
         search_text = request.POST.get('search_text', '')
         current_events = Event.objects.filter(result_out =False, title__icontains=search_text).order_by('-created_time')
         past_events = Event.objects.filter(result_out= True, title__icontains=search_text).order_by('-created_time')
-        context = {'current_events':current_events, 'past_events':past_events, 'search_text':search_text}
+        context = {'current_events':current_events, 'past_events':past_events, 'search_text':search_text, 'current_time':current_time}
 
     else:
         current_events = Event.objects.filter(result_out =False).order_by('-created_time')
         past_events = Event.objects.filter(result_out= True).order_by('-created_time')
-        context = {'current_events':current_events, 'past_events':past_events}
+        context = {'current_events':current_events, 'past_events':past_events, 'current_time':current_time}
     return render(request, 'applicant_view/all_events_view.html', context)
 
 def all_groups(request):
@@ -861,4 +865,8 @@ def log_out(request):
     logout(request)
     return redirect("/")    
 
+
+
+def error_404_view(request, exception):
+    return render(request,'error404.html')
 

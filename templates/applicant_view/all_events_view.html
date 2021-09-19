@@ -67,6 +67,8 @@
           <h6><span class="badge rounded-pill bg-light text-dark mt-2 mb-4">
 
               {% if event.result_out %}
+              Results out
+              {% elif current_time > event.end_time  %}
               Passed
               {% else %}
               Ongoing
@@ -110,7 +112,7 @@
               <h6><span class="badge rounded-pill bg-light text-dark mt-2">
   
                   {% if event.result_out %}
-                  Passed
+                  Results out
                   {% else %}
                   Ongoing
                   {% endif %}

@@ -246,6 +246,8 @@
                                         <h6><span class="badge rounded-pill bg-light text-dark mt-2 mb-3">
 
                                                 {% if event.result_out %}
+                                                Result Out
+                                                {% elif current_time > event.end_time  %}
                                                 Passed
                                                 {% else %}
                                                 Ongoing
